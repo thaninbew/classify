@@ -1,7 +1,10 @@
 const express = require('express');
 const axios = require('axios');
+const cors = require('cors');
 const app = express();
 const port = 3001;
+
+app.use(cors());
 
 const clientId = '0baf35c5a5a44675bb1a7a00bdc8f518';
 const clientSecret = '2aa149c0819f4493a599876ebf15c437';
@@ -44,12 +47,31 @@ app.get('/callback', async (req, res) => {
       }
     );
     const accessToken = response.data.access_token;
-    res.send('Successfully authenticated!');
+    // Redirect back to the frontend with the token
+    res.redirect(`http://localhost:3000/?access_token=${accessToken}`);
   } catch (error) {
     console.error('Error authenticating:', error);
     res.send('Authentication failed!');
   }
 });
+
+app.get('/playlists', async (req, res) => {
+  const accessToken = req.headers['authorization'];
+
+  try {
+    const response = await axios.get('https://api.spotify.com/v1/me/playlists', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching playlists:', error);
+    res.status(400).send('Failed to fetch playlists');
+  }
+});
+
+
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
