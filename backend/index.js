@@ -6,8 +6,10 @@ const port = 3001;
 
 app.use(cors());
 
-const clientId = '0baf35c5a5a44675bb1a7a00bdc8f518';
-const clientSecret = '2aa149c0819f4493a599876ebf15c437';
+require('dotenv').config();
+
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
 const redirectUri = 'http://localhost:3001/callback';
 
 app.get('/', (req, res) => {
