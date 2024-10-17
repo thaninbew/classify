@@ -3,14 +3,14 @@ const axios = require('axios');
 const cors = require('cors');
 const app = express();
 const port = 3001;
+const env = require('dotenv').config();
 
 app.use(cors());
-
-require('dotenv').config();
 
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 const redirectUri = 'http://localhost:3001/callback';
+
 
 app.get('/', (req, res) => {
     res.send('Welcome to the Classify Backend!');
