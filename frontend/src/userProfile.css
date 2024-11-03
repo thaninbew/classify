@@ -1,0 +1,16 @@
+.user-profile {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .cool-fact {
+    margin-top: 20px;
+  }
+  

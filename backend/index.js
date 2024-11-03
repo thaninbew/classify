@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
   });
   
 app.get('/login', (req, res) => {
-  const scope = 'user-read-private user-read-email playlist-read-private playlist-read-collaborative';
+  const scope = 'user-read-private user-read-email user-top-read playlist-read-private playlist-read-collaborative';
   res.redirect(
     'https://accounts.spotify.com/authorize?' +
       new URLSearchParams({
@@ -76,6 +76,54 @@ app.get('/playlists', async (req, res) => {
   }
 });
 
+app.get('/user-profile', async (req, res) => {
+  const accessToken = req.headers['authorization'];
+
+  if (!accessToken) {
+    return res.status(400).send('Access token is missing');
+  }
+
+  try {
+    // Fetch user profile
+    const userProfileResponse = await axios.get('https://api.spotify.com/v1/me', {
+      headers: {
+        Authorization: accessToken,
+      },
+    });
+    const userProfile = userProfileResponse.data;
+
+    // Fetch user's top artist
+    const topArtistsResponse = await axios.get('https://api.spotify.com/v1/me/top/artists?limit=1', {
+      headers: {
+        Authorization: accessToken,
+      },
+    });
+    const topArtist = topArtistsResponse.data.items[0];
+
+    // Fetch user's top track
+    const topTracksResponse = await axios.get('https://api.spotify.com/v1/me/top/tracks?limit=1', {
+      headers: {
+        Authorization: accessToken,
+      },
+    });
+    const topTrack = topTracksResponse.data.items[0];
+
+    // Send combined user information
+    res.json({
+      displayName: userProfile.display_name,
+      email: userProfile.email,
+      profilePicture: userProfile.images.length > 0 ? userProfile.images[0].url : null,
+      coolFact: {
+        topArtist: topArtist ? topArtist.name : 'No top artist data',
+        topTrack: topTrack ? `${topTrack.name} by ${topTrack.artists[0].name}` : 'No top track data',
+      },
+    });
+  } catch (error) {
+    console.error('Error fetching user profile:', error.response ? error.response.data : error);
+    res.status(error.response?.status || 500).send('Failed to fetch user profile');
+  }
+});
+
 app.get('/refresh_token', async (req, res) => {
   const refreshToken = req.query.refresh_token;
 
@@ -99,7 +147,6 @@ app.get('/refresh_token', async (req, res) => {
     res.status(500).send('Failed to refresh token');
   }
 });
-
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
