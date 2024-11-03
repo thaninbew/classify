@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-import './playlists.css'; 
+import './playlistCard.css'; 
 
 const Playlists = ({ accessToken }) => {
   const [playlists, setPlaylists] = useState([]);
@@ -50,3 +50,4 @@ const Playlists = ({ accessToken }) => {
 };
 
 export default Playlists;
+  

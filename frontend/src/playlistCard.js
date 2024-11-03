@@ -1,13 +1,18 @@
 import React from 'react';
+import './playlistCard.css';
 
 const PlaylistCard = ({ playlist, onSelect }) => {
   return (
-    <div className="playlist-card" onClick={() => onSelect(playlist.id)}>
-      <img src={playlist.imageUrl} alt={playlist.name} />
+    <div className="playlist-card" onClick={onSelect}>
+      <img
+        src={playlist.images[0]?.url || 'https://via.placeholder.com/150'}
+        alt={playlist.name}
+        className="playlist-image"
+      />
       <div className="playlist-info">
         <h3>{playlist.name}</h3>
-        <p>{playlist.description}</p>
-        <span>{playlist.totalTracks} tracks</span>
+        <p>{playlist.description || 'No description available'}</p>
+        <span>{playlist.tracks.total} tracks</span>
       </div>
     </div>
   );

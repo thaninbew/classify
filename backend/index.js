@@ -59,17 +59,20 @@ app.get('/callback', async (req, res) => {
 
 app.get('/playlists', async (req, res) => {
   const accessToken = req.headers['authorization'];
+  if (!accessToken) {
+    return res.status(400).send('Access token is missing');
+  }
 
   try {
     const response = await axios.get('https://api.spotify.com/v1/me/playlists', {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization:`Bearer ${accessToken}`, // Ensure this is in the correct format: "Bearer <token>"
       },
     });
     res.json(response.data);
   } catch (error) {
-    console.error('Error fetching playlists:', error);
-    res.status(400).send('Failed to fetch playlists');
+    console.error('Error fetching playlists:', error.response ? error.response.data : error);
+    res.status(error.response?.status || 500).send('Failed to fetch playlists');
   }
 });
 
