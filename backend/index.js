@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
   });
   
 app.get('/login', (req, res) => {
-  const scope = 'user-read-private user-read-email playlist-read-private';
+  const scope = 'user-read-private user-read-email playlist-read-private playlist-read-collaborative';
   res.redirect(
     'https://accounts.spotify.com/authorize?' +
       new URLSearchParams({
@@ -66,7 +66,7 @@ app.get('/playlists', async (req, res) => {
   try {
     const response = await axios.get('https://api.spotify.com/v1/me/playlists', {
       headers: {
-        Authorization:`Bearer ${accessToken}`, // Ensure this is in the correct format: "Bearer <token>"
+        Authorization: accessToken,
       },
     });
     res.json(response.data);
@@ -76,6 +76,29 @@ app.get('/playlists', async (req, res) => {
   }
 });
 
+app.get('/refresh_token', async (req, res) => {
+  const refreshToken = req.query.refresh_token;
+
+  try {
+    const response = await axios.post(
+      'https://accounts.spotify.com/api/token',
+      new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      }),
+      {
+        headers: {
+          Authorization: `Basic ${Buffer.from(clientId + ':' + clientSecret).toString('base64')}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
+    res.json({ access_token: response.data.access_token });
+  } catch (error) {
+    console.error('Error refreshing token:', error.response ? error.response.data : error);
+    res.status(500).send('Failed to refresh token');
+  }
+});
 
 
 app.listen(port, () => {

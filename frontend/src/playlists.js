@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
-import './playlistCard.css'; 
+import PlaylistCard from './playlistCard';
+import './playlistCard.css';
 
 const Playlists = ({ accessToken }) => {
   const [playlists, setPlaylists] = useState([]);
@@ -8,19 +9,23 @@ const Playlists = ({ accessToken }) => {
 
   const fetchPlaylists = async () => {
     setLoading(true);
+    console.log('Access Token:', accessToken); // Log the access token for debugging
+  
     try {
       const response = await axios.get('http://localhost:3001/playlists', {
         headers: {
-          Authorization: accessToken,
+          Authorization: `Bearer ${accessToken}`, // Correct Bearer format
         },
       });
+      console.log('Playlists Response:', response.data); // Log the response to verify data
       setPlaylists(response.data.items);
     } catch (error) {
-      console.error('Error fetching playlists:', error);
+      console.error('Error fetching playlists:', error.response ? error.response.data : error.message);
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="playlists-container">
@@ -29,20 +34,11 @@ const Playlists = ({ accessToken }) => {
       </button>
       <div className="playlists-grid">
         {playlists.map((playlist) => (
-          <div key={playlist.id} className="playlist-card">
-            <img
-              src={playlist.images[0]?.url || 'https://via.placeholder.com/150'}
-              alt={playlist.name}
-              className="playlist-image"
-            />
-            <div className="playlist-info">
-              <h3>{playlist.name}</h3>
-              <p>{playlist.description || 'No description available'}</p>
-              <button onClick={() => alert(`Selected playlist: ${playlist.name}`)}>
-                Select Playlist
-              </button>
-            </div>
-          </div>
+          <PlaylistCard
+            key={playlist.id}
+            playlist={playlist}
+            onSelect={() => alert(`Selected playlist: ${playlist.name}`)}
+          />
         ))}
       </div>
     </div>
@@ -50,4 +46,3 @@ const Playlists = ({ accessToken }) => {
 };
 
 export default Playlists;
-  

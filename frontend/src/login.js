@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 const Login = () => {
   const authenticateUser = async () => {
     try {
