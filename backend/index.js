@@ -148,6 +148,41 @@ app.get('/refresh_token', async (req, res) => {
   }
 });
 
+app.post('/cluster', async (req, res) => {
+  try {
+    const response = await axios.post('http://localhost:5000/cluster', {
+      features: req.body.features,  //this should be an array of features from frontend
+      n_clusters: req.body.n_clusters || 5,  //optional number of clusters
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching clustering results:', error.message);
+    res.status(400).send('Failed to cluster songs');
+  }
+});
+
+app.get('/features/:id', async (req, res) => {
+  const accessToken = req.headers['authorization'];
+  const trackId = req.params.id;
+
+  if (!accessToken) {
+    return res.status(400).send('Access token is missing');
+  }
+
+  try {
+    const response = await axios.get(`https://api.spotify.com/v1/audio-features/${trackId}`, {
+      headers: {
+        Authorization: accessToken,
+      },
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching track features:', error.response ? error.response.data : error);
+    res.status(error.response?.status || 500).send('Failed to fetch track features');
+  }
+});
+
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
