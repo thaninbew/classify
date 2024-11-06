@@ -149,10 +149,14 @@ app.get('/refresh_token', async (req, res) => {
 });
 
 app.post('/cluster', async (req, res) => {
+  const { features, n_clusters } = req.body;
+  if (!features || !n_clusters) {
+    return res.status(400).send('Missing features or number of clusters');
+  }
   try {
     const response = await axios.post('http://localhost:5000/cluster', {
-      features: req.body.features,  //this should be an array of features from frontend
-      n_clusters: req.body.n_clusters || 5,  //optional number of clusters
+      features: features,  // Array of features from your frontend
+      n_clusters: n_clusters  // Number of clusters from frontend
     });
     res.json(response.data);
   } catch (error) {
