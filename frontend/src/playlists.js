@@ -9,15 +9,12 @@ const Playlists = ({ accessToken }) => {
 
   const fetchPlaylists = async () => {
     setLoading(true);
-    console.log('Access Token:', accessToken); // Log the access token for debugging
-  
     try {
       const response = await axios.get('http://localhost:3001/playlists', {
         headers: {
-          Authorization: `Bearer ${accessToken}`, // Correct Bearer format
+          Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log('Playlists Response:', response.data); // Log the response to verify data
       setPlaylists(response.data.items);
     } catch (error) {
       console.error('Error fetching playlists:', error.response ? error.response.data : error.message);
