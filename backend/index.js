@@ -29,6 +29,14 @@ app.get('/login', (req, res) => {
   );
 });
 
+app.get('/logout', (req, res) => {
+  storedAccessToken = null;
+  res.send({
+    success: true,
+    message: 'Successfully logged out. All session tokens have been cleared.'
+  });
+});
+
 app.get('/callback', async (req, res) => {
   const code = req.query.code || null;
   try {
