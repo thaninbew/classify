@@ -28,14 +28,14 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Classify App</h1>
+      <h1>Classify</h1>
       {!accessToken ? (
         <Login />
       ) : (
         <>
+        <button onClick={logout}>Logout</button>
           <UserProfile accessToken={accessToken} />
           <Playlists accessToken={accessToken} />
-          <button onClick={logout}>Logout</button>
         </>
       )}
     </div>
