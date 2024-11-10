@@ -203,6 +203,7 @@ app.listen(port, () => {
 // including metadata like track name, artist, album, and audio features.
 app.get('/playlists/:playlist_id/tracks', async (req, res) => {
   const accessToken = req.headers['authorization'];
+  console.log('Access Token:', accessToken);
   const playlistId = req.params.playlist_id;
 
   if (!accessToken) {
