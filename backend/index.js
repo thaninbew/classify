@@ -198,3 +198,41 @@ app.get('/features/:id', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
+// endpoint that will interact with Spotify's API to fetch detailed track data, 
+// including metadata like track name, artist, album, and audio features.
+app.get('/playlists/:playlist_id/tracks', async (req, res) => {
+  const accessToken = req.headers['authorization'];
+  const playlistId = req.params.playlist_id;
+
+  if (!accessToken) {
+    return res.status(400).send('Access token is missing');
+  }
+
+  try {
+    const response = await axios.get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    // Extract relevant data from the tracks
+    const tracks = response.data.items.map(item => {
+      const track = item.track;
+      return {
+        name: track.name,
+        artist: track.artists.map(artist => artist.name).join(', '),
+        album: track.album.name,
+        audio_features: {
+          // Include additional features here if you fetch them
+          // (tempo, energy, etc. may require another call to Spotify's /audio-features endpoint)
+        },
+      };
+    });
+
+    res.json(tracks);
+  } catch (error) {
+    console.error('Error fetching tracks:', error.response ? error.response.data : error);
+    res.status(error.response?.status || 500).send('Failed to fetch tracks');
+  }
+});

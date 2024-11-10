@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { useState } from 'react';
 import PlaylistCard from './playlistCard';
+import PlaylistTracks from './PlaylistTracks';
 import './playlistCard.css';
 
 const Playlists = ({ accessToken }) => {
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
 
   const fetchPlaylists = async () => {
     setLoading(true);
@@ -22,7 +24,16 @@ const Playlists = ({ accessToken }) => {
       setLoading(false);
     }
   };
-  
+
+  if (selectedPlaylist) {
+    return (
+      <PlaylistTracks
+        accessToken={accessToken}
+        playlistId={selectedPlaylist}
+        onBack={() => setSelectedPlaylist(null)}
+      />
+    );
+  }
 
   return (
     <div className="playlists-container">
@@ -34,7 +45,7 @@ const Playlists = ({ accessToken }) => {
           <PlaylistCard
             key={playlist.id}
             playlist={playlist}
-            onSelect={() => alert(`Selected playlist: ${playlist.name}`)}
+            onSelect={() => setSelectedPlaylist(playlist.id)}
           />
         ))}
       </div>
