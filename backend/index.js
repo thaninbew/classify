@@ -4,13 +4,17 @@ const cors = require('cors');
 const app = express();
 const port = 3001;
 const env = require('dotenv').config();
+const { Configuration, OpenAIApi } = require('openai');
+
 
 app.use(cors());
 
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 const redirectUri = 'http://localhost:3001/callback';
-
+const openai = new OpenAIApi(new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+}));
 
 app.get('/', (req, res) => {
     res.send('Welcome to the Classify Backend!');
@@ -216,7 +220,6 @@ app.get('/playlists/:playlist_id/tracks', async (req, res) => {
     const tracks = response.data.items.map(item => {
       if (item.track) {
         const track = item.track;
-        console.log('Track:', track, 'Track ID:', track.id, 'Track Name:', track.name, 'Track Artist:', track.artists.map(artist => artist.name).join(', '), 'Track Album:', track.album.name);
         return {
           id: track.id,
           name: track.name,
@@ -233,3 +236,21 @@ app.get('/playlists/:playlist_id/tracks', async (req, res) => {
     res.status(error.response?.status || 500).send('Failed to fetch tracks');
   }
 });
+
+//openAI GPT-3 implementation
+app.post('/generate-playlist-description', async (req, res) => {
+  const { prompt } = req.body;
+
+  try {
+    const response = await openai.createCompletion({
+      model: 'text-davinci-003', // or another available GPT-3 model
+      prompt: prompt,
+      max_tokens: 100,
+    });
+    res.json({ description: response.data.choices[0].text.trim() });
+  } catch (error) {
+    console.error('Error generating description:', error);
+    res.status(500).send('Failed to generate description');
+  }
+});
+
