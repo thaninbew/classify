@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import numpy as np
-from backend.matching_algo import match_tracks_to_clusters
+from matching_algo.matching import match_tracks_to_clusters
 
 app = Flask(__name__)
 
