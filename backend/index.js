@@ -57,7 +57,6 @@ app.get('/callback', async (req, res) => {
       }
     );
     const accessToken = response.data.access_token;
-    // Redirect back to the frontend with the token
     res.redirect(`http://localhost:3000/?access_token=${accessToken}`);
   } catch (error) {
     console.error('Error authenticating:', error);
@@ -92,7 +91,6 @@ app.get('/user-profile', async (req, res) => {
   }
 
   try {
-    // Fetch user profile
     const userProfileResponse = await axios.get('https://api.spotify.com/v1/me', {
       headers: {
         Authorization: accessToken,
@@ -100,7 +98,6 @@ app.get('/user-profile', async (req, res) => {
     });
     const userProfile = userProfileResponse.data;
 
-    // Fetch user's top artist
     const topArtistsResponse = await axios.get('https://api.spotify.com/v1/me/top/artists?limit=1', {
       headers: {
         Authorization: accessToken,
@@ -108,7 +105,6 @@ app.get('/user-profile', async (req, res) => {
     });
     const topArtist = topArtistsResponse.data.items[0];
 
-    // Fetch user's top track
     const topTracksResponse = await axios.get('https://api.spotify.com/v1/me/top/tracks?limit=1', {
       headers: {
         Authorization: accessToken,
@@ -116,7 +112,6 @@ app.get('/user-profile', async (req, res) => {
     });
     const topTrack = topTracksResponse.data.items[0];
 
-    // Send combined user information
     res.json({
       displayName: userProfile.display_name,
       email: userProfile.email,
@@ -163,8 +158,8 @@ app.post('/cluster', async (req, res) => {
   }
   try {
     const response = await axios.post('http://localhost:5000/cluster', {
-      features: features,  // Array of features from your frontend
-      n_clusters: n_clusters  // Number of clusters from frontend
+      features: features,
+      n_clusters: n_clusters
     });
     res.json(response.data);
   } catch (error) {
@@ -213,23 +208,24 @@ app.get('/playlists/:playlist_id/tracks', async (req, res) => {
   try {
     const response = await axios.get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: accessToken,
       },
     });
 
     // Extract relevant data from the tracks
     const tracks = response.data.items.map(item => {
-      const track = item.track;
-      return {
-        name: track.name,
-        artist: track.artists.map(artist => artist.name).join(', '),
-        album: track.album.name,
-        audio_features: {
-          // Include additional features here if you fetch them
-          // (tempo, energy, etc. may require another call to Spotify's /audio-features endpoint)
-        },
-      };
-    });
+      if (item.track) {
+        const track = item.track;
+        console.log('Track:', track, 'Track ID:', track.id, 'Track Name:', track.name, 'Track Artist:', track.artists.map(artist => artist.name).join(', '), 'Track Album:', track.album.name);
+        return {
+          id: track.id,
+          name: track.name,
+          artist: track.artists.map(artist => artist.name).join(', '),
+          album: track.album.name,
+        };
+      }
+      return null;
+    }).filter(track => track !== null); // Filter out any null values if track data is missing
 
     res.json(tracks);
   } catch (error) {

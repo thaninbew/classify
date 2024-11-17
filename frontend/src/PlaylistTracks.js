@@ -32,10 +32,8 @@ const PlaylistTracks = ({ accessToken, playlistId, onBack }) => {
       <h2>Tracks in Playlist</h2>
       <ul>
         {tracks.map((track, index) => (
-          <li key={index}>
+          <li key={track.id}>
             <strong>{track.name}</strong> by {track.artist} - Album: {track.album}
-            <br />
-            Tempo: {track.audioFeatures.tempo} | Energy: {track.audioFeatures.energy}
           </li>
         ))}
       </ul>
