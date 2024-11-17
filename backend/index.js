@@ -238,19 +238,36 @@ app.get('/playlists/:playlist_id/tracks', async (req, res) => {
 });
 
 //openAI GPT-3 implementation
-app.post('/generate-playlist-description', async (req, res) => {
-  const { prompt } = req.body;
+app.post('/generate-description', async (req, res) => {
+  const { genre, energy, valence } = req.body;
+
+  if (!genre || energy === undefined || valence === undefined) {
+    return res.status(400).send({ error: 'Genre, energy, and valence are required of song cluster required.' });
+  }
 
   try {
+    // Construct the optimized prompt
+    const prompt = `
+      Genre: ${genre}
+      Energy: ${energy.toFixed(2)}
+      Valence: ${valence.toFixed(2)}
+      Generate a short, creative playlist name and vibe description based on these details.
+    `;
+
+    // Call GPT-3 with prompt engineering
     const response = await openai.createCompletion({
-      model: 'text-davinci-003', // or another available GPT-3 model
-      prompt: prompt,
-      max_tokens: 100,
+      model: 'text-davinci-003',
+      prompt: prompt.trim(),
+      max_tokens: 50, // Limit output length to minimize costs
+      temperature: 0.7, // Add creativity without being too random
     });
-    res.json({ description: response.data.choices[0].text.trim() });
+
+    // Extract and send the response
+    const description = response.data.choices[0].text.trim();
+    res.send({ description });
   } catch (error) {
     console.error('Error generating description:', error);
-    res.status(500).send('Failed to generate description');
+    res.status(500).send({ error: 'Failed to generate description' });
   }
 });
 
