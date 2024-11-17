@@ -4,13 +4,17 @@ const cors = require('cors');
 const app = express();
 const port = 3001;
 const env = require('dotenv').config();
+const { Configuration, OpenAIApi } = require('openai');
+
 
 app.use(cors());
 
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 const redirectUri = 'http://localhost:3001/callback';
-
+const openai = new OpenAIApi(new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+}));
 
 app.get('/', (req, res) => {
     res.send('Welcome to the Classify Backend!');
@@ -216,7 +220,6 @@ app.get('/playlists/:playlist_id/tracks', async (req, res) => {
     const tracks = response.data.items.map(item => {
       if (item.track) {
         const track = item.track;
-        console.log('Track:', track, 'Track ID:', track.id, 'Track Name:', track.name, 'Track Artist:', track.artists.map(artist => artist.name).join(', '), 'Track Album:', track.album.name);
         return {
           id: track.id,
           name: track.name,
@@ -233,3 +236,38 @@ app.get('/playlists/:playlist_id/tracks', async (req, res) => {
     res.status(error.response?.status || 500).send('Failed to fetch tracks');
   }
 });
+
+//openAI GPT-3 implementation
+app.post('/generate-description', async (req, res) => {
+  const { genre, energy, valence } = req.body;
+
+  if (!genre || energy === undefined || valence === undefined) {
+    return res.status(400).send({ error: 'Genre, energy, and valence are required of song cluster required.' });
+  }
+
+  try {
+    // Construct the optimized prompt
+    const prompt = `
+      Genre: ${genre}
+      Energy: ${energy.toFixed(2)}
+      Valence: ${valence.toFixed(2)}
+      Generate a short, creative playlist name and vibe description based on these details.
+    `;
+
+    // Call GPT-3 with prompt engineering
+    const response = await openai.createCompletion({
+      model: 'text-davinci-003',
+      prompt: prompt.trim(),
+      max_tokens: 50, // Limit output length to minimize costs
+      temperature: 0.7, // Add creativity without being too random
+    });
+
+    // Extract and send the response
+    const description = response.data.choices[0].text.trim();
+    res.send({ description });
+  } catch (error) {
+    console.error('Error generating description:', error);
+    res.status(500).send({ error: 'Failed to generate description' });
+  }
+});
+
