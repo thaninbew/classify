@@ -1,28 +1,32 @@
 # Classify
 Classify allows you to effortlessly break down your Spotify playlists into different genres and vibes using the power of AI. With a seamless integration of Spotify and advanced AI capabilities, this application provides a personalized way to explore, categorize, and rediscover your music collection.
 
+
 ## Features
-Spotify Integration: Log in securely using your Spotify credentials to access your playlists and favorite tracks.
-AI-Based Categorization: Harness AI to classify songs based on genres, energy levels, and more using GPT-3 for playlist names and descriptions.
-Interactive Interface: Select playlists, view detailed song information, and manage your music library effortlessly.
-Customizable Playlists: Automatically generate new playlists or manually adjust categories to match your preferences.
-Responsive UI: Built with React for a modern, intuitive, and mobile-friendly experience.
+- **Spotify Integration**: Log in securely using your Spotify credentials to access your playlists and favorite tracks.  
+- **AI-Based Categorization**: Harness AI to classify songs based on genres, energy levels, and more using GPT-3 for playlist names and descriptions.  
+- **Interactive Interface**: Select playlists, view detailed song information, and manage your music library effortlessly.  
+- **Customizable Playlists**: Automatically generate new playlists or manually adjust categories to match your preferences.  
+- **Responsive UI**: Built with React for a modern, intuitive, and mobile-friendly experience.  
+
 
 ## Tech Stack
-Frontend: React.js, Bootstrap, Axios
-Backend: Node.js, Express.js
-AI/ML: Natural Language Processing (NLP) using GPT-3 and clustering algorithms in scikit-learn
-Authentication: Spotify OAuth 2.0
-Deployment: Heroku for both frontend and backend
-Version Control: Git/GitHub
+- **Frontend**: React.js, Bootstrap, Axios  
+- **Backend**: Node.js, Express.js  
+- **AI/ML**: Natural Language Processing (NLP) using GPT-3 and clustering algorithms in scikit-learn  
+- **Authentication**: Spotify OAuth 2.0  
+- **Deployment**: Heroku for both frontend and backend  
+- **Version Control**: Git/GitHub  
+
 
 ## Getting Started
-### Prerequisites
-To run this project locally, ensure you have the following installed:
 
-Node.js and npm
-Spotify Developer Account (for API credentials)
-Installation
+### Prerequisites
+To run this project locally, ensure you have the following:
+- Node.js and npm  
+- Spotify Developer Account (for API credentials)
+- OpenAI Account with Tokens (for API credentials)
+
 ### Clone the repository:
 ```
 git clone https://github.com/thaninbew/classify.git
@@ -87,7 +91,8 @@ classify/
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
 ## Contact
-If you have any questions, suggestions, or feedback, feel free to reach out:
+If you have any questions, suggestions, or feedback, feel free to reach out to Thanin Kongkiatsophon:
+
 Email: bewxtt@gmail.com
 
 ## Credits
