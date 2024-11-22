@@ -16,10 +16,6 @@ exports.callback = async (req, res) => {
   try {
     const { access_token, refresh_token } = await getSpotifyToken(code);
     
-    // Log tokens for debugging
-    console.log('Access Token:', access_token);
-    console.log('Refresh Token:', refresh_token);
-    
     // Redirect or return a success response
     res.redirect(`http://localhost:3000/?access_token=${access_token}&refresh_token=${refresh_token}`);
   } catch (error) {

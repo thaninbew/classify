@@ -16,7 +16,7 @@ const testGenerateDescription = async () => {
 
   try {
     //send a POST request to backend
-    const response = await axios.post(`${BASE_URL}/generate-description`, testInput);
+    const response = await axios.post(`${BASE_URL}/openai/generate-description`, testInput);
 
     console.log('--- Backend Response ---');
     console.log('Generated Description:', response.data.description);
