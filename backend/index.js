@@ -4,17 +4,16 @@ const cors = require('cors');
 const app = express();
 const port = 3001;
 const env = require('dotenv').config();
-const { Configuration, OpenAIApi } = require('openai');
-
+const {OpenAI } = require('openai');
 
 app.use(cors());
 
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 const redirectUri = 'http://localhost:3001/callback';
-const openai = new OpenAIApi(new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-}));
+const openai = new OpenAI({
+  key: process.env.OPENAI_API_KEY
+})
 
 app.get('/', (req, res) => {
     res.send('Welcome to the Classify Backend!');
@@ -202,7 +201,6 @@ app.listen(port, () => {
 // including metadata like track name, artist, album, and audio features.
 app.get('/playlists/:playlist_id/tracks', async (req, res) => {
   const accessToken = req.headers['authorization'];
-  console.log('Access Token:', accessToken);
   const playlistId = req.params.playlist_id;
 
   if (!accessToken) {
