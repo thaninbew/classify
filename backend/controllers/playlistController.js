@@ -17,8 +17,29 @@ const {
   
   exports.getUserProfile = async (req, res) => {
     try {
-      const userProfile = await getSpotifyUserProfile(req.accessToken); // Use token from middleware
-      res.json(userProfile);
+      // Fetch user profile
+      const userProfile = await getSpotifyUserProfile(req.accessToken);
+  
+      // Fetch top artist
+      const topArtistsResponse = await getSpotifyPlaylistTracks(req.accessToken, 'top/artists?limit=1');
+      const topArtist = topArtistsResponse[0]?.name || 'No top artist data';
+  
+      // Fetch top track
+      const topTracksResponse = await getSpotifyPlaylistTracks(req.accessToken, 'top/tracks?limit=1');
+      const topTrack = topTracksResponse[0]
+        ? `${topTracksResponse[0].name} by ${topTracksResponse[0].artists[0].name}`
+        : 'No top track data';
+  
+      // Return enriched profile
+      res.json({
+        displayName: userProfile.display_name,
+        email: userProfile.email,
+        profilePicture: userProfile.images.length > 0 ? userProfile.images[0].url : null,
+        coolFact: {
+          topArtist,
+          topTrack,
+        },
+      });
     } catch (error) {
       console.error('Error fetching user profile:', error.message);
       res.status(500).send('Failed to fetch user profile');
