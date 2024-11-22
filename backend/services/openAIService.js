@@ -9,7 +9,7 @@ const generatePlaylistDescription = async ({ genre, energy, valence }) => {
   Genre: ${genre}, Energy: ${energy.toFixed(2)}, Valence: ${valence.toFixed(2)}.
   ###
   Playlist Name: <name>
-  Description: <short description>
+  Description: <description max 20 words>
   ###
   `;
 
