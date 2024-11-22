@@ -5,13 +5,18 @@ const openai = new OpenAI({
 });
 
 const generatePlaylistDescription = async ({ genre, energy, valence }) => {
-  const prompt = `Create a short, creative playlist name and very short description based on:
-  Genre: ${genre}, Energy: ${energy.toFixed(2)}, Valence: ${valence.toFixed(2)}.`;
+  const prompt = `
+  Genre: ${genre}, Energy: ${energy.toFixed(2)}, Valence: ${valence.toFixed(2)}.
+  ###
+  Playlist Name: <name>
+  Description: <short description>
+  ###
+  `;
 
   const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
     messages: [
-      { role: 'system', content: 'You are a efficient playlist name & description maker' },
+      { role: 'system', content: 'You are a creative playlist name & description maker' },
       { role: 'user', content: prompt },
     ],
     max_tokens: 50,
