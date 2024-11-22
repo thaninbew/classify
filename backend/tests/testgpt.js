@@ -5,9 +5,9 @@ const BASE_URL = 'http://localhost:3001';
 
 //test data for the prompt
 const testInput = {
-  genre: 'Bedroom Pop',
-  energy: 0.45,
-  valence: 0.65,
+  genre: 'R&B',
+  energy: 0.5,
+  valence: 0.5,
 };
 
 const testGenerateDescription = async () => {
