@@ -16,7 +16,7 @@ const UserProfile = ({ accessToken }) => {
       
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:3001/user-profile', {
+        const response = await axios.get('http://localhost:3001/playlists/user-profile', {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },

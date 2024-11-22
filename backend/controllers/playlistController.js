@@ -1,5 +1,11 @@
 // playlistController.js
-const { getSpotifyPlaylists, getSpotifyUserProfile, getSpotifyPlaylistTracks, getSpotifyTrackFeatures } = require('../services/spotifyService');
+const { 
+    getSpotifyPlaylists, 
+    getSpotifyUserProfile, 
+    getSpotifyPlaylistTracks, 
+    getSpotifyTrackFeatures ,
+    getAccessToken
+} = require('../services/spotifyService');
 
 exports.getPlaylists = async (req, res) => {
   const accessToken = req.headers['authorization'];

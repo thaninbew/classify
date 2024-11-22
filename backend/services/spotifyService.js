@@ -26,12 +26,18 @@ exports.getSpotifyToken = async (code, refreshToken) => {
         },
       }
     );
-    return response.data;
+
+    // Extract the access token explicitly
+    const accessToken = response.data.access_token;
+
+    // Optionally, return only the access token or the entire response
+    return { accessToken, ...response.data };
   } catch (error) {
-    console.error('Error fetching Spotify token:', error.message);
+    console.error('Error fetching Spotify token:', error.response?.data || error.message);
     throw new Error('Failed to fetch Spotify token');
   }
 };
+
 
 // Function to fetch the current user's Spotify profile
 exports.getSpotifyUserProfile = async (accessToken) => {

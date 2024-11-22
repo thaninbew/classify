@@ -18,7 +18,7 @@ const App = () => {
 
   const logout = async () => {
     try {
-      await axios.get('http://localhost:3001/logout');
+      await axios.get('http://localhost:3001/auth/logout');
       setAccessToken(''); 
       window.location.reload(); 
     } catch (error) {
