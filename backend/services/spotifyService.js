@@ -37,17 +37,43 @@ exports.getSpotifyToken = async (code, refreshToken) => {
 // Function to fetch the current user's Spotify profile
 exports.getSpotifyUserProfile = async (accessToken) => {
   try {
-    const response = await axios.get('https://api.spotify.com/v1/me', {
+    // Fetch user profile
+    const userProfileResponse = await axios.get('https://api.spotify.com/v1/me', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    return response.data;
+
+    // Fetch top artists
+    const topArtistsResponse = await axios.get('https://api.spotify.com/v1/me/top/artists?limit=1', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    // Fetch top tracks
+    const topTracksResponse = await axios.get('https://api.spotify.com/v1/me/top/tracks?limit=1', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const topArtist = topArtistsResponse.data.items[0];
+    const topTrack = topTracksResponse.data.items[0];
+
+    return {
+      ...userProfileResponse.data,
+      coolFact: {
+        topArtist: topArtist ? topArtist.name : 'No top artist data',
+        topTrack: topTrack ? `${topTrack.name} by ${topTrack.artists[0].name}` : 'No top track data',
+      },
+    };
   } catch (error) {
     console.error('Error fetching user profile:', error.response?.data || error.message);
     throw new Error('Failed to fetch user profile');
   }
 };
+
 
 // Function to fetch playlists from the current user
 exports.getSpotifyPlaylists = async (accessToken) => {
