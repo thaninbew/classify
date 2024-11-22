@@ -7,12 +7,13 @@ const env = require('dotenv').config();
 const {OpenAI } = require('openai');
 
 app.use(cors());
+app.use(express.json());
 
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 const redirectUri = 'http://localhost:3001/callback';
 const openai = new OpenAI({
-  key: process.env.OPENAI_API_KEY
+  apiKey: process.env.OPENAI_API_KEY
 })
 
 app.get('/', (req, res) => {
@@ -226,7 +227,7 @@ app.get('/playlists/:playlist_id/tracks', async (req, res) => {
         };
       }
       return null;
-    }).filter(track => track !== null); // Filter out any null values if track data is missing
+    }).filter(track => track !== null); //filter out any null values if track data is missing
 
     res.json(tracks);
   } catch (error) {
@@ -240,32 +241,39 @@ app.post('/generate-description', async (req, res) => {
   const { genre, energy, valence } = req.body;
 
   if (!genre || energy === undefined || valence === undefined) {
-    return res.status(400).send({ error: 'Genre, energy, and valence are required of song cluster required.' });
+    return res.status(400).send({ error: 'Genre, energy, and valence are required.' });
   }
+
+  //OPTIMIZE THIS PROMPT
+  const prompt = `Create a short, creative playlist name and vibe description based on:
+  Genre: ${genre}, Energy: ${energy.toFixed(2)}, Valence: ${valence.toFixed(2)}.`;
+  
 
   try {
-    // Construct the optimized prompt
-    const prompt = `
-      Genre: ${genre}
-      Energy: ${energy.toFixed(2)}
-      Valence: ${valence.toFixed(2)}
-      Generate a short, creative playlist name and vibe description based on these details.
-    `;
-
-    // Call GPT-3 with prompt engineering
-    const response = await openai.createCompletion({
-      model: 'text-davinci-003',
-      prompt: prompt.trim(),
-      max_tokens: 50, // Limit output length to minimize costs
-      temperature: 0.7, // Add creativity without being too random
+    //call OpenAI API
+    const response = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo-0125',
+      messages:[
+      {role: 'system', content: 'You are a creative assistant for generating playlist descriptions'},
+      {role: 'user',content: prompt.trim()}],
+      max_tokens: 50, //output length limit
+      temperature: 0.7, //creativity
     });
 
-    // Extract and send the response
-    const description = response.data.choices[0].text.trim();
+    const description = response.choices[0].message.content.trim();
     res.send({ description });
   } catch (error) {
-    console.error('Error generating description:', error);
-    res.status(500).send({ error: 'Failed to generate description' });
+    console.error('Error communicating with OpenAI:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).send({
+        error: 'Failed to generate description',
+        details: error.response.data,
+      });
+    }
+
+    res.status(500).send({ error: 'Internal Server Error' });
   }
 });
+
 
