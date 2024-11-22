@@ -27,53 +27,39 @@ exports.getSpotifyToken = async (code, refreshToken) => {
       }
     );
 
-    // Extract the access token explicitly
-    const accessToken = response.data.access_token;
-
-    // Optionally, return only the access token or the entire response
-    return { accessToken, ...response.data };
+    return response.data; // Return entire response including access and refresh tokens
   } catch (error) {
     console.error('Error fetching Spotify token:', error.response?.data || error.message);
     throw new Error('Failed to fetch Spotify token');
   }
 };
 
-
 // Function to fetch the current user's Spotify profile
 exports.getSpotifyUserProfile = async (accessToken) => {
   try {
     const response = await axios.get('https://api.spotify.com/v1/me', {
       headers: {
-        Authorization: accessToken,
+        Authorization: `Bearer ${accessToken}`,
       },
-      
     });
     return response.data;
   } catch (error) {
-    console.error('Error fetching user profile:', error.message);
+    console.error('Error fetching user profile:', error.response?.data || error.message);
     throw new Error('Failed to fetch user profile');
   }
 };
 
 // Function to fetch playlists from the current user
 exports.getSpotifyPlaylists = async (accessToken) => {
-
-  if (!accessToken) {
-    return res.status(400).send('Access token is missing');
-  }
-
-  // Remove 'Bearer ' prefix if present
-  accessToken = accessToken.split(' ')[1];
-  console.log('Cleaned Access Token:', accessToken);
   try {
     const response = await axios.get('https://api.spotify.com/v1/me/playlists', {
       headers: {
-        Authorization: {accessToken},
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     return response.data;
   } catch (error) {
-    console.error('Error fetching playlists:', error.message);
+    console.error('Error fetching playlists:', error.response?.data || error.message);
     throw new Error('Failed to fetch playlists');
   }
 };
@@ -83,7 +69,7 @@ exports.getSpotifyPlaylistTracks = async (accessToken, playlistId) => {
   try {
     const response = await axios.get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
       headers: {
-        Authorization: {accessToken},
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 
@@ -102,7 +88,7 @@ exports.getSpotifyPlaylistTracks = async (accessToken, playlistId) => {
 
     return tracks.filter((track) => track !== null); // Remove null values
   } catch (error) {
-    console.error('Error fetching playlist tracks:', error.message);
+    console.error('Error fetching playlist tracks:', error.response?.data || error.message);
     throw new Error('Failed to fetch playlist tracks');
   }
 };
@@ -112,12 +98,12 @@ exports.getSpotifyTrackFeatures = async (accessToken, trackId) => {
   try {
     const response = await axios.get(`https://api.spotify.com/v1/audio-features/${trackId}`, {
       headers: {
-        Authorization: {accessToken},
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     return response.data;
   } catch (error) {
-    console.error('Error fetching track features:', error.message);
+    console.error('Error fetching track features:', error.response?.data || error.message);
     throw new Error('Failed to fetch track features');
   }
 };

@@ -21,6 +21,7 @@ const UserProfile = ({ accessToken }) => {
               Authorization: `Bearer ${accessToken}`,
             },
           });          
+        console.log('User Profile Data:', response.data);
         setUserProfile(response.data);
       } catch (error) {
         console.error('Error fetching user profile:', error);

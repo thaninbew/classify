@@ -6,7 +6,7 @@ exports.login = (req, res) => {
     response_type: 'code',
     client_id: process.env.CLIENT_ID,
     scope,
-    redirect_uri: process.env.REDIRECT_URI,
+    redirect_uri: process.env.REDIRECT_URI, // Ensure consistency with token exchange
   })}`;
   res.redirect(redirectUri);
 };
@@ -14,21 +14,32 @@ exports.login = (req, res) => {
 exports.callback = async (req, res) => {
   const code = req.query.code;
   try {
-    const accessToken = await getSpotifyToken(code);
-    res.redirect(`http://localhost:3000/?access_token=${accessToken}`);
+    const { access_token, refresh_token } = await getSpotifyToken(code);
+    
+    // Log tokens for debugging
+    console.log('Access Token:', access_token);
+    console.log('Refresh Token:', refresh_token);
+    
+    // Redirect or return a success response
+    res.redirect(`http://localhost:3000/?access_token=${access_token}&refresh_token=${refresh_token}`);
   } catch (error) {
     console.error('Error during callback:', error.message);
     res.status(500).send('Authentication failed!');
   }
 };
 
+
 exports.refreshToken = async (req, res) => {
   const refreshToken = req.query.refresh_token;
+  if (!refreshToken) {
+    return res.status(400).send('Refresh token is missing');
+  }
+
   try {
-    const newToken = await getSpotifyToken(null, refreshToken);
-    res.json({ access_token: newToken });
+    const { accessToken, refresh_token } = await getSpotifyToken(null, refreshToken); // Handle both accessToken and refresh_token
+    res.json({ access_token: accessToken, refresh_token });
   } catch (error) {
-    console.error('Error refreshing token:', error.message);
+    console.error('Error refreshing token:', error.response?.data || error.message);
     res.status(500).send('Failed to refresh token');
   }
 };
@@ -36,3 +47,4 @@ exports.refreshToken = async (req, res) => {
 exports.logout = (req, res) => {
   res.json({ success: true, message: 'Successfully logged out.' });
 };
+
