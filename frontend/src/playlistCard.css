@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'milkman';
+  src: url('../public/fonts/milkman.ttf') format('truetype'); 
+}
+
 /* General Playlist Page Styling */
 .playlists-container {
   text-align: center;
@@ -6,7 +11,7 @@
   max-width: 1200px;
   background-color: #000; /* Match the background color from the image */
   color: white; /* White text for contrast */
-  font-family: 'Arial', sans-serif;
+  font-family: 'milkman', sans-serif;
 }
 
 button {
