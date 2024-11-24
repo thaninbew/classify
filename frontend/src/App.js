@@ -29,7 +29,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Welcome To</h1>
+      <h1>welcome to</h1>
       <img src="/classify.png" alt="Cover Not Found"  style={{ width: "500px", height: "150px", objectFit: "cover" }} />
       {!accessToken ? (
         <Login />

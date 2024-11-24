@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  text-align: start;
   background-color: black;
 }
 
@@ -28,6 +28,8 @@ html, body {
 h1 {
   color:azure;
   font-family: 'milkman', sans-serif;
+  padding-left: 3%;
+  margin-top: 10%;
 }
 
 .App-header {
