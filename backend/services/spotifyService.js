@@ -58,11 +58,15 @@ exports.getSpotifyUserProfile = async (accessToken) => {
       },
     });
 
+    const userProfile = userProfileResponse.data;
     const topArtist = topArtistsResponse.data.items[0];
     const topTrack = topTracksResponse.data.items[0];
 
     return {
-      ...userProfileResponse.data,
+      id: userProfile.id,
+      displayName: userProfile.display_name,
+      email: userProfile.email,
+      profilePicture: userProfile.images?.[0]?.url || null,
       coolFact: {
         topArtist: topArtist ? topArtist.name : 'No top artist data',
         topTrack: topTrack ? `${topTrack.name} by ${topTrack.artists[0].name}` : 'No top track data',
