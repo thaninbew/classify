@@ -16,7 +16,7 @@
 
 .container {
     display: flex;
-    width: 80%;
+    width: 100%;
     max-width: 1200px;
     height: 80vh;
 }
@@ -46,12 +46,12 @@
 .artist-info, .track-info {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 2rem;
 }
 
 .artist-circle, .track-circle {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     border: 2px solid #ffffff;
     display: flex;
@@ -103,7 +103,7 @@ ol li {
   align-items: flex-end;
   justify-content: center;
   position: relative;
-  padding: 2rem;
+  padding: 6rem;
   margin-left: auto;
   width: 100%;
   max-width: 1920px;
@@ -115,7 +115,7 @@ ol li {
 }
 
 .header h1 {
-  font-size: 2rem;
+  font-size: 3rem;
   margin: 0;
 }
 
@@ -148,8 +148,8 @@ ol li {
 
 .user-name {
     color: #1ED760;
-    font-size: 1.5rem;
+    font-size: 2rem;
     z-index: 1;
     text-align: center;
-    margin-top: 360px;
+    margin-top: 350px;
 }
