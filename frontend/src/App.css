@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: black;
 }
 
 .App-logo {
@@ -7,10 +8,26 @@
   pointer-events: none;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensure the body takes up the full viewport height */
+  background-color: black;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+@font-face {
+  font-family: 'milkman';
+  src: url('../public/fonts/milkman.ttf') format('truetype'); 
+}
+
+h1 {
+  color:azure;
+  font-family: 'milkman', sans-serif;
 }
 
 .App-header {
@@ -36,3 +53,11 @@
     transform: rotate(360deg);
   }
 }
+
+.title {
+  color:blue;
+  font-size: calc(10px + 2vmin);
+  height: auto;
+}
+
+
