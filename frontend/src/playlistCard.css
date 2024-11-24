@@ -1,50 +1,111 @@
+/* General Playlist Page Styling */
 .playlists-container {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-  
-  .playlists-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-  }
-  
+  text-align: center;
+  margin: 20px auto;
+  padding: 10px;
+  max-width: 1200px;
+  background-color: #000; /* Match the background color from the image */
+  color: white; /* White text for contrast */
+  font-family: 'Arial', sans-serif;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #28a745; /* Green button */
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+/* Grid Layout for Playlists */
+.playlists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+/* Playlist Card Styling */
+.playlist-card {
+  background-color: #111; /* Dark background */
+  color: white;
+  border: 1px solid #444; /* Subtle border */
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Depth effect */
+  width: 200px;
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.playlist-card:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+  box-shadow: 0px 6px 12px rgba(0, 255, 0, 0.4); /* Neon effect */
+}
+
+/* Playlist Image */
+.playlist-image {
+  width: 100%;
+  height: 200px; /* Match the square dimensions */
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Playlist Info */
+.playlist-info {
+  margin-top: 10px;
+}
+
+.playlist-info h3 {
+  font-size: 1em;
+  margin: 10px 0;
+}
+
+.playlist-info span {
+  font-size: 0.9em;
+  color: #ccc; /* Lighter text for track count */
+}
+
+/* Footer Links */
+.footer {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.footer a {
+  color: #61dafb; /* Blue links */
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
   .playlist-card {
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    width: 200px;
-    padding: 15px;
-    text-align: center;
+    width: 90%;
   }
-  
-  .playlist-image {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 4px;
+}
+
+@media (max-width: 480px) {
+  .playlists-container {
+    padding: 5px;
   }
-  
-  .playlist-info {
-    margin-top: 10px;
+
+  button {
+    font-size: 14px;
+    padding: 8px 16px;
   }
-  
-  .playlist-info h3 {
-    font-size: 1.2em;
-    margin: 10px 0;
-  }
-  
-  .playlist-info button {
-    margin-top: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
+}
