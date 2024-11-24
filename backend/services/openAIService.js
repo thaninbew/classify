@@ -25,7 +25,6 @@ Description MUST be one sentence and less than 15 words.
     max_tokens: 50,
     temperature: 0.2,
   });
-  console.log('API Response:', response);
 
   const output = response.choices[0].message.content.trim();
 
