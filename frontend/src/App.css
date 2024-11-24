@@ -8,11 +8,18 @@
   pointer-events: none;
 }
 
-html, body {
+html {
   margin: 0;
   padding: 0;
   height: 100%; /* Ensure the body takes up the full viewport height */
   background-color: black;
+  color:azure;
+  padding-left: 3%;
+}
+
+body {
+  padding-left: 0%;
+  margin-bottom: 3%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -28,7 +35,6 @@ html, body {
 h1 {
   color:azure;
   font-family: 'milkman', sans-serif;
-  padding-left: 3%;
   margin-top: 10%;
 }
 
@@ -63,7 +69,7 @@ h1 {
 }
 
 .loginbutton button {
-  padding-left: 3%
+  font-family: "milkman", sans-serif;
 }
 
 

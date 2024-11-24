@@ -31,6 +31,7 @@ const App = () => {
     <div className="App">
       <h1>welcome to</h1>
       <img src="/classify.png" alt="Cover Not Found"  style={{ width: "500px", height: "150px", objectFit: "cover" }} />
+      <body>tired of having too many songs mixed together in one playlist? start generating custom playlists from your spotify using AI </body>
       {!accessToken ? (
         <Login />
       ) : (
