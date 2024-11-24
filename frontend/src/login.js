@@ -10,7 +10,7 @@ const Login = () => {
 
   return (
     <div>
-      <button onClick={authenticateUser}>Login with Spotify</button>
+      <button className="buttonPrimary" onClick={authenticateUser}>Login with Spotify</button>
     </div>
   );
 };

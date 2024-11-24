@@ -34,11 +34,11 @@ const App = () => {
       {!accessToken ? (
         <Login />
       ) : (
-        <>
+        <div className="loginbutton">
         <button onClick={logout}>Logout</button>
           <UserProfile accessToken={accessToken} />
           <Playlists accessToken={accessToken} />
-        </>
+        </div>
       )}
     </div>
   );
