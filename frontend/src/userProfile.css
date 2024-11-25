@@ -41,12 +41,14 @@
 
 .top-artists, .top-tracks {
     margin-bottom: 2rem;
+    font-family: "General Sans", sans-serif;
 }
 
 .artist-info, .track-info {
     display: flex;
     align-items: center;
     gap: 2rem;
+    font-family: "General Sans", sans-serif;
 }
 
 .artist-circle, .track-circle {
@@ -90,6 +92,7 @@ ol li {
     cursor: pointer;
     color: #000;
     transition: background-color 0.3s;
+    font-family: "General Sans", sans-serif;
 }
 
 #go-btn:hover {
@@ -117,12 +120,14 @@ ol li {
 .header h1 {
   font-size: 3rem;
   margin: 0;
+  font-family: "milkman", sans-serif;
 }
 
 .favorites {
     font-style: italic;
     color: #1ED760;
     font-size: 3rem;
+    font-family: 'Ladi Gross', sans-serif;
 }
 
 .main-circle {
@@ -133,7 +138,7 @@ ol li {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
   position: relative;
   align-self: flex-end;
 }
@@ -152,4 +157,5 @@ ol li {
     z-index: 1;
     text-align: center;
     margin-top: 350px;
+    font-family: "milkman", sans-serif;
 }
