@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Landing.css';
 import Login from '../components/login';
+import { useNavigate } from 'react-router-dom';
 
 const Landing = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const accessToken = urlParams.get('access_token');
+    const refreshToken = urlParams.get('refresh_token');
+
+    if (accessToken) {
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      navigate('/dashboard');
+    }
+  }, [navigate]);
+  
   return (
     <div className="landing-container">
       <header className="landing-header">
