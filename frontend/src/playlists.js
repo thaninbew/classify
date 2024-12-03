@@ -31,13 +31,23 @@ const Playlists = ({ accessToken }) => {
         {loading ? 'Loading...' : 'Get Playlists'}
       </button>
       <div className="playlists-grid">
-        {playlists.map((playlist) => (
-          <PlaylistCard
-            key={playlist.id}
-            playlist={playlist}
-            onSelect={() => console.log(`Selected ${playlist.name}`)}
-          />
-        ))}
+        {playlists.length > 0 ? (
+          playlists.map((playlist, index) => (
+            playlist?.id ? (
+              <PlaylistCard
+                key={playlist.id}
+                playlist={playlist}
+                onSelect={() => console.log(`Selected ${playlist.name}`)}
+              />
+            ) : (
+              <p key={index} style={{ color: 'red' }}>
+                Playlist without ID skipped
+              </p>
+            )
+          ))
+        ) : (
+          !loading && <p>No playlists available. Please try again.</p>
+        )}
       </div>
       <footer className="footer">
         <a href="/about">ABOUT</a>
