@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import Login from './login';
-import Playlists from './playlists';
-import UserProfile from './userProfile';
+import Login from './components/login';
+import Playlists from './components/playlists';
+import UserProfile from './components/userProfile';
 import axios from 'axios';
 import './App.css';
 
