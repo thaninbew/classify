@@ -1,16 +1,24 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import './login.css';
+
 const Login = () => {
+  const navigate = useNavigate();
+
   const authenticateUser = async () => {
     try {
-      // This will call the backend endpoint that starts the Spotify login process
       window.location.href = 'http://localhost:3001/auth/login';
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error during authentication:', error);
     }
   };
 
   return (
-    <div>
-      <button className="buttonPrimary" onClick={authenticateUser}>Login with Spotify</button>
+    <div className="login-container">
+      <button className="login-button" onClick={authenticateUser}>
+        LOGIN
+      </button>
     </div>
   );
 };

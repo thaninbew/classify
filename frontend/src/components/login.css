@@ -1,0 +1,36 @@
+@font-face {
+    font-family: 'milkman';
+    src: url('../../public/fonts/milkman.ttf') format('truetype'); 
+  }
+  
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .login-button {
+    font-family: 'milkman', sans-serif;
+    font-size: 1.5rem;
+    color: #FFFFFF;
+    background-color: #1db954;
+    border: none;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .login-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px #218838;
+  }
+  
+  .login-button:active {
+    transform: scale(1); /* Reset zoom on click */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
