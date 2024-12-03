@@ -4,7 +4,7 @@ import axios from 'axios';
 const Cluster = () => {
   const [numberOfPlaylists, setNumberOfPlaylists] = useState(5);
   const [clusterResult, setClusterResult] = useState(null);
-  const [features, setFeatures] = useState([]); // Placeholder for features, to be fetched or provided as needed
+  const [features] = useState([]);
 
   const createPlaylists = async () => {
     try {
