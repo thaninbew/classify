@@ -1,42 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import Login from '../components/login';
-import Playlists from '../components/playlists';
-import UserProfile from '../components/userProfile';
-import axios from 'axios';
+import React from 'react';
 import './Landing.css';
+import Login from '../components/login';
 
 const Landing = () => {
-  const [accessToken, setAccessToken] = useState('');
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('access_token');
-    if (token) {
-      setAccessToken(token);
-      window.history.replaceState({}, document.title, '/');
-    }
-  }, []);
-
-  const logout = async () => {
-    await axios.get('http://localhost:3001/auth/logout');
-    setAccessToken('');
-    window.location.reload();
-  };
-
   return (
-    <div className="Landing">
-      <h1>Welcome to</h1>
-      <img src="/classify.png" alt="Cover Not Found" style={{ width: "500px", height: "150px", objectFit: "cover" }} />
-      <p>Tired of having too many songs mixed together in one playlist? Start generating custom playlists from your Spotify using AI.</p>
-      {!accessToken ? (
+    <div className="landing-container">
+      <header className="landing-header">
+        <h1>
+          welcome to <span className="classify-highlight">classify,</span>
+        </h1>
+        <p>
+          tired of having too many songs mixed together in one playlist? start generating custom playlists from your spotify using AI
+        </p>
+      </header>
+      <div className="login-section">
         <Login />
-      ) : (
-        <div className="login-button">
-          <button onClick={logout}>Logout</button>
-          <UserProfile accessToken={accessToken} />
-          <Playlists accessToken={accessToken} />
-        </div>
-      )}
+        <div className="animation-placeholder"></div>
+      </div>
+      <footer className="landing-footer">
+        <a href="/about">ABOUT</a>
+        <a href="/privacy">PRIVACY</a>
+      </footer>
     </div>
   );
 };
