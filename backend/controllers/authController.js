@@ -15,14 +15,12 @@ exports.callback = async (req, res) => {
   const code = req.query.code;
   try {
     const { access_token, refresh_token } = await getSpotifyToken(code);
-    
-    // Redirect or return a success response
-    res.redirect(`http://localhost:3000/?access_token=${access_token}&refresh_token=${refresh_token}`);
+    res.redirect(`http://localhost:3000/dashboard?access_token=${access_token}&refresh_token=${refresh_token}`);
   } catch (error) {
-    console.error('Error during callback:', error.message);
     res.status(500).send('Authentication failed!');
   }
 };
+
 
 
 exports.refreshToken = async (req, res) => {
