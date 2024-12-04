@@ -5,8 +5,10 @@ const authRoutes = require('./routes/authRoutes');
 const playlistRoutes = require('./routes/playlistRoutes');
 const openAIRoutes = require('./routes/openAIRoutes');
 const clusteringRoutes = require('./routes/clusteringRoutes');
+const cookieParser = require('cookie-parser');
 
 const app = express();
+app.use(cookieParser());
 
 app.use(cors());
 app.use(express.json());
