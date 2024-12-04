@@ -17,9 +17,6 @@ const App = () => {
           {/* Dashboard Page */}
           <Route path="/dashboard" element={<Dashboard />} />
           {/* User Classify Page */}
-          <Route path="/user-classification" element={<UserClassification />} />
-          {/* Classification Results Page */}
-          <Route path="/results" element={<ClassificationResults />} />
           <Route path="/playlist/:id" element={<PlaylistPage />} />
         </Routes>
       </div>
