@@ -1,27 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const PlaylistTracks = ({ accessToken, playlistId, onBack }) => {
+const PlaylistTracks = ({ playlistId, onBack }) => {
   const [tracks, setTracks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('PlaylistTracks component mounted.');
+    console.log(`Received playlistId: ${playlistId}`);
+
     const fetchTracks = async () => {
       try {
-        const validateResponse = await axios.get('http://localhost:3001/auth/validate', {
+        const response = await axios.get(`http://localhost:3001/playlists/${playlistId}/tracks`, {
           withCredentials: true,
         });
 
-        if (validateResponse.data.valid) {
-          const response = await axios.get(`http://localhost:3001/playlists/${playlistId}/tracks`, {
-            withCredentials: true,
-          });
-          setTracks(response.data.items || []);
+        console.log('Full response data:', response.data);
+
+        // Directly set the tracks if the data is already an array
+        if (Array.isArray(response.data)) {
+          setTracks(response.data);
         } else {
-          console.error('User is not authenticated.');
+          console.error('Unexpected response structure:', response.data);
         }
       } catch (error) {
-        console.error('Error during validation or fetching tracks:', error.message);
+        console.error('Failed to fetch tracks:', error.message);
       } finally {
         setLoading(false);
       }
@@ -30,19 +33,28 @@ const PlaylistTracks = ({ accessToken, playlistId, onBack }) => {
     fetchTracks();
   }, [playlistId]);
 
-  if (loading) return <div>Loading tracks...</div>;
+  if (loading) {
+    console.log('Tracks are still loading...');
+    return <div>Loading tracks...</div>;
+  }
+
+  console.log('Tracks loaded successfully:', tracks);
 
   return (
     <div>
       <button onClick={onBack}>Back to Playlists</button>
       <h2>Tracks in Playlist</h2>
-      <ul>
-        {tracks.map((track, index) => (
-          <li key={track.id}>
-            <strong>{track.name}</strong> by {track.artists.map((artist) => artist.name).join(', ')} - Album: {track.album.name}
-          </li>
-        ))}
-      </ul>
+      {tracks.length === 0 ? (
+        <p>No tracks available for this playlist.</p>
+      ) : (
+        <ul>
+          {tracks.map((track, index) => (
+            <li key={track.id || index}>
+              <strong>{track.name}</strong> by {track.artist || 'Unknown Artist'} - Album: {track.album || 'Unknown Album'}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
