@@ -4,52 +4,29 @@ import './userProfile.css';
 
 const UserProfile = ({ accessToken }) => {
   const [userProfile, setUserProfile] = useState(null);
-  const [topArtists, setTopArtists] = useState([]);
-  const [topTracks, setTopTracks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      if (!accessToken) {
-        setLoading(false);
-        return;
-      }
-      
-      setLoading(true);
       try {
-        // Fetch user's profile data from Spotify API
-        const userProfileResponse = await axios.get('https://api.spotify.com/v1/me', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+        const response = await axios.get('http://localhost:3001/playlists/user-profile', {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          withCredentials: true,
         });
-        setUserProfile(userProfileResponse.data);
 
-        // Fetch user's top artists
-        const topArtistsResponse = await axios.get('https://api.spotify.com/v1/me/top/artists?limit=3', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        setTopArtists(topArtistsResponse.data.items);
-
-        // Fetch user's top tracks
-        const topTracksResponse = await axios.get('https://api.spotify.com/v1/me/top/tracks?limit=3', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        setTopTracks(topTracksResponse.data.items);
-      } catch (error) {
-        console.error('Error fetching user profile or top data:', error);
-        setError('Failed to load user profile or top artists/tracks.');
+        setUserProfile(response.data);
+      } catch (err) {
+        console.error('Error fetching user profile:', err.message);
+        setError('Failed to load user profile.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUserProfile();
+    if (accessToken) {
+      fetchUserProfile();
+    }
   }, [accessToken]);
 
   if (loading) {
@@ -61,62 +38,57 @@ const UserProfile = ({ accessToken }) => {
   }
 
   return (
-    <div className="container">
-      <div className="sidebar">
-        <button id="back-btn">◀</button>
-        <div className="top-artists">
-          <h2>your top artists</h2>
-          <div className="artist-info">
-            <div className="artist-circle">
-              <img
-                src={topArtists.length > 0 ? topArtists[0].images[0].url : 'https://via.placeholder.com/50'}
-                alt="Most Listened Artist"
-                id="top-artist-picture"
-                className="circle-image"
-              />
+    <div className="user-profile">
+      <div className="container">
+        <div className="sidebar">
+          <div className="top-artists">
+            <h2>Your Top Artist</h2>
+            <div className="artist-info">
+              <div className="artist-circle">
+                <img
+                  src={
+                    userProfile.coolFact?.topArtist
+                      ? userProfile.coolFact.topArtist.image
+                      : 'https://via.placeholder.com/50'
+                  }
+                  alt="Top Artist"
+                  className="circle-image"
+                />
+              </div>
+              <p>{userProfile.coolFact?.topArtist || 'No data'}</p>
             </div>
-            <ol>
-              {topArtists.map((artist, index) => (
-                <li key={index}>{artist.name}</li>
-              ))}
-            </ol>
+          </div>
+          <div className="top-tracks">
+            <h2>Your Top Track</h2>
+            <div className="track-info">
+              <div className="track-circle">
+                <img
+                  src={
+                    userProfile.coolFact?.topTrack
+                      ? userProfile.coolFact.topTrack.image
+                      : 'https://via.placeholder.com/50'
+                  }
+                  alt="Top Track"
+                  className="circle-image"
+                />
+              </div>
+              <p>{userProfile.coolFact?.topTrack || 'No data'}</p>
+            </div>
           </div>
         </div>
-        <div className="top-tracks">
-          <h2>your top tracks</h2>
-          <div className="track-info">
-            <div className="track-circle">
-              <img
-                src={topTracks.length > 0 ? topTracks[0].album.images[0].url : 'https://via.placeholder.com/50'}
-                alt="Most Listened Track"
-                id="top-track-picture"
-                className="circle-image"
-              />
-            </div>
-            <ol>
-              {topTracks.map((track, index) => (
-                <li key={index}>{track.name}</li>
-              ))}
-            </ol>
+        <div className="main">
+          <div className="header">
+            <h1>Your All Time <span className="favorites">Favorites</span></h1>
           </div>
-        </div>
-        <div className="go-button">
-          <button id="go-btn">Let's Go ▶</button>
-        </div>
-      </div>
-      <div className="main">
-        <div className="header">
-          <h1>Your All Time <span className="favorites">favorites</span></h1>
-        </div>
-        <div className="main-circle">
-          <img
-            src={userProfile?.images?.length > 0 ? userProfile.images[0].url : 'https://via.placeholder.com/300'}
-            alt="Profile"
-            id="profile"
-            className="profile-circle"
-          />
-          <div className="user-name">
-            <p>{userProfile?.display_name || 'NAME'}</p>
+          <div className="main-circle">
+            <img
+              src={userProfile.profilePicture || 'https://via.placeholder.com/300'}
+              alt="Profile"
+              className="profile-circle"
+            />
+            <div className="user-name">
+              <p>{userProfile.displayName || 'NAME'}</p>
+            </div>
           </div>
         </div>
       </div>
