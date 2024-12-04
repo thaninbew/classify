@@ -2,16 +2,34 @@ import React, { useEffect } from 'react';
 import './Landing.css';
 import Login from '../components/login';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const Landing = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const accessToken = Cookies.get('access_token');
-    if (accessToken) {
+const validateAuth = async () => {
+  try {
+    const accessToken = document.cookie.includes('access_token'); // Check if cookies are available
+    if (!accessToken) {
+      console.log('No access token cookie found, skipping validation.');
+      return;
+    }
+
+    const response = await axios.get('http://localhost:3001/auth/validate', {
+      withCredentials: true,
+    });
+
+    if (response.data.valid) {
       navigate('/dashboard');
     }
+  } catch (error) {
+    console.error('Authentication failed:', error.message);
+  }
+};
+
+
+    validateAuth();
   }, [navigate]);
   
   return (

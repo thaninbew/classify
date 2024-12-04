@@ -7,13 +7,22 @@ const Playlists = ({ accessToken, onSelect }) => {
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  console.log('Playlists component is rendered');
+
   useEffect(() => {
     const fetchPlaylists = async () => {
+      console.log('fetchPlaylists function is called');
+      if (!accessToken) {
+        console.error('Access token is missing.');
+        return;
+      }
+
       try {
         const response = await axios.get('http://localhost:3001/playlists', {
           headers: { Authorization: `Bearer ${accessToken}` },
+          withCredentials: true,
         });
-        setPlaylists(response.data.items);
+        setPlaylists(response.data.items || []);
       } catch (error) {
         console.error('Error fetching playlists:', error.message);
       } finally {
@@ -35,7 +44,7 @@ const Playlists = ({ accessToken, onSelect }) => {
               <PlaylistCard
                 key={playlist.id}
                 playlist={playlist}
-                onSelect={() => onSelect(playlist)} 
+                onSelect={() => onSelect(playlist)}
               />
             )
           ))}

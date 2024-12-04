@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 const PlaylistTracks = ({ accessToken, playlistId, onBack }) => {
   const [tracks, setTracks] = useState([]);
@@ -8,21 +7,21 @@ const PlaylistTracks = ({ accessToken, playlistId, onBack }) => {
 
   useEffect(() => {
     const fetchTracks = async () => {
-      const accessToken = Cookies.get('access_token');
-      if (!accessToken) {
-        console.error('Access token missing');
-        return;
-      }
-
       try {
-        const response = await axios.get(`http://localhost:3001/playlists/${playlistId}/tracks`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+        const validateResponse = await axios.get('http://localhost:3001/auth/validate', {
+          withCredentials: true,
         });
-        setTracks(response.data.items || []);
+
+        if (validateResponse.data.valid) {
+          const response = await axios.get(`http://localhost:3001/playlists/${playlistId}/tracks`, {
+            withCredentials: true,
+          });
+          setTracks(response.data.items || []);
+        } else {
+          console.error('User is not authenticated.');
+        }
       } catch (error) {
-        console.error('Error fetching tracks:', error);
+        console.error('Error during validation or fetching tracks:', error.message);
       } finally {
         setLoading(false);
       }
