@@ -1,4 +1,6 @@
 const { getSpotifyToken } = require('../services/spotifyService');
+const axios = require('axios');
+
 
 exports.login = (req, res) => {
   const scope = 'user-read-private user-read-email user-top-read playlist-read-private playlist-read-collaborative';
@@ -58,17 +60,26 @@ exports.logout = (req, res) => {
   res.json({ success: true, message: 'Successfully logged out.' });
 };
 
-exports.validateAuth = (req, res) => {
+exports.validateAuth = async (req, res) => {
   const token = req.cookies.access_token;
-  console.log('Cookies received:', req.cookies);
-
+  console.log('Cookies received in validateAuth:', req.cookies);
 
   if (!token) {
     return res.status(401).json({ valid: false, error: 'Access token is missing or invalid.' });
   }
 
-  res.status(200).json({ valid: true });
+  try {
+    await axios.get('https://api.spotify.com/v1/me', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    res.status(200).json({ valid: true, token });
+  } catch (error) {
+    console.error('Token validation failed:', error.response?.data || error.message);
+    res.status(401).json({ valid: false, error: 'Access token is invalid or expired.' });
+  }
 };
+
 
 
 
