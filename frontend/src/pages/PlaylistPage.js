@@ -6,7 +6,6 @@ const PlaylistPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const playlist = location.state?.playlist;
-  const accessToken = localStorage.getItem('accessToken'); // Retrieve from localStorage
 
   if (!playlist) {
     return <p>Invalid playlist. Please go back and select a valid playlist.</p>;
@@ -22,7 +21,7 @@ const PlaylistPage = () => {
         <h1>{playlist.name}</h1>
         <p>{playlist.description || 'No description available'}</p>
       </header>
-      <PlaylistTracks accessToken={accessToken} playlistId={playlist.id} onBack={handleBack} />
+      <PlaylistTracks playlistId={playlist.id} onBack={handleBack} />
     </div>
   );
 };

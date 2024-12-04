@@ -2,24 +2,20 @@ import React, { useEffect, useState } from 'react';
 import Playlists from '../components/playlists';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
+import Cookies from 'js-cookie';
 
 const Dashboard = () => {
   const [accessToken, setAccessToken] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('access_token');
-    if (token) {
-      setAccessToken(token);
-      window.history.replaceState({}, document.title, '/dashboard'); // Clean up URL
+    const token = Cookies.get('access_token');
+    if (!token) {
+      navigate('/');
     } else {
-      const storedToken = localStorage.getItem('accessToken');
-      if (storedToken) {
-        setAccessToken(storedToken);
-      }
+      setAccessToken(token);
     }
-  }, []);
+  }, [navigate]);
 
   const handlePlaylistSelect = (playlist) => {
     console.log(`Selected playlist: ${playlist.name}`);
@@ -27,9 +23,9 @@ const Dashboard = () => {
   };
 
   const logout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    window.location.href = '/';
+    Cookies.remove('access_token');
+    Cookies.remove('refresh_token');
+    navigate('/');
   };
 
   return (

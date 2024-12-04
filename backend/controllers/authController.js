@@ -6,7 +6,7 @@ exports.login = (req, res) => {
     response_type: 'code',
     client_id: process.env.CLIENT_ID,
     scope,
-    redirect_uri: process.env.REDIRECT_URI, // Ensure consistency with token exchange
+    redirect_uri: process.env.REDIRECT_URI, 
   })}`;
   res.redirect(redirectUri);
 };
@@ -15,12 +15,24 @@ exports.callback = async (req, res) => {
   const code = req.query.code;
   try {
     const { access_token, refresh_token } = await getSpotifyToken(code);
-    res.redirect(`http://localhost:3000/dashboard?access_token=${access_token}&refresh_token=${refresh_token}`);
+
+    res.cookie('access_token', access_token, {
+      httpOnly: true, //prevent access by JavaScript
+      secure: process.env.NODE_ENV === 'production', //use secure cookies in production
+      sameSite: 'Strict', //protect against CSRF
+    });
+
+    res.cookie('refresh_token', refresh_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+    });
+
+    res.redirect('http://localhost:3000/dashboard');
   } catch (error) {
     res.status(500).send('Authentication failed!');
   }
 };
-
 
 
 exports.refreshToken = async (req, res) => {
@@ -39,6 +51,9 @@ exports.refreshToken = async (req, res) => {
 };
 
 exports.logout = (req, res) => {
+  res.clearCookie('access_token');
+  res.clearCookie('refresh_token');
   res.json({ success: true, message: 'Successfully logged out.' });
 };
+
 

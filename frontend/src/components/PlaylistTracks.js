@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const PlaylistTracks = ({ accessToken, playlistId, onBack }) => {
   const [tracks, setTracks] = useState([]);
@@ -7,8 +8,9 @@ const PlaylistTracks = ({ accessToken, playlistId, onBack }) => {
 
   useEffect(() => {
     const fetchTracks = async () => {
+      const accessToken = Cookies.get('access_token');
       if (!accessToken) {
-        console.error('No access token found.');
+        console.error('Access token missing');
         return;
       }
 
@@ -18,7 +20,7 @@ const PlaylistTracks = ({ accessToken, playlistId, onBack }) => {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        setTracks(response.data.items || []); // Adjust based on API structure
+        setTracks(response.data.items || []);
       } catch (error) {
         console.error('Error fetching tracks:', error);
       } finally {
@@ -27,7 +29,7 @@ const PlaylistTracks = ({ accessToken, playlistId, onBack }) => {
     };
 
     fetchTracks();
-  }, [accessToken, playlistId]);
+  }, [playlistId]);
 
   if (loading) return <div>Loading tracks...</div>;
 
