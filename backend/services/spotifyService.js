@@ -95,11 +95,15 @@ exports.getSpotifyPlaylists = async (accessToken) => {
 };
 
 // Function to fetch tracks from a specific playlist
-exports.getSpotifyPlaylistTracks = async (accessToken, playlistId) => {
+exports.getSpotifyPlaylistTracks = async (accessToken, playlistId, offset = 0, limit = 100) => {
   try {
     const response = await axios.get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        offset,
+        limit,
       },
     });
 
@@ -116,14 +120,18 @@ exports.getSpotifyPlaylistTracks = async (accessToken, playlistId) => {
       return null;
     });
 
-    return tracks.filter((track) => track !== null); // Remove null values
+    return {
+      tracks: tracks.filter((track) => track !== null),
+      total: response.data.total,
+      next: response.data.next, 
+    };
   } catch (error) {
     console.error('Error fetching playlist tracks:', error.response?.data || error.message);
     throw new Error('Failed to fetch playlist tracks');
   }
 };
 
-// Function to fetch audio features for a specific track
+
 exports.getSpotifyTrackFeatures = async (accessToken, trackId) => {
   try {
     const response = await axios.get(`https://api.spotify.com/v1/audio-features/${trackId}`, {
