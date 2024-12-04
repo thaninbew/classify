@@ -17,9 +17,9 @@ exports.callback = async (req, res) => {
     const { access_token, refresh_token } = await getSpotifyToken(code);
 
     res.cookie('access_token', access_token, {
-      httpOnly: true, //prevent access by JavaScript
-      secure: process.env.NODE_ENV === 'production', //use secure cookies in production
-      sameSite: 'Strict', //protect against CSRF
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
     });
 
     res.cookie('refresh_token', refresh_token, {
@@ -30,9 +30,11 @@ exports.callback = async (req, res) => {
 
     res.redirect('http://localhost:3000/dashboard');
   } catch (error) {
-    res.status(500).send('Authentication failed!');
+    console.error('Error during authentication callback:', error.message);
+    res.status(500).send('Authentication failed.');
   }
 };
+
 
 
 exports.refreshToken = async (req, res) => {
@@ -55,5 +57,18 @@ exports.logout = (req, res) => {
   res.clearCookie('refresh_token');
   res.json({ success: true, message: 'Successfully logged out.' });
 };
+
+exports.validateAuth = (req, res) => {
+  const token = req.cookies.access_token;
+  console.log('Cookies received:', req.cookies);
+
+
+  if (!token) {
+    return res.status(401).json({ valid: false, error: 'Access token is missing or invalid.' });
+  }
+
+  res.status(200).json({ valid: true });
+};
+
 
 
