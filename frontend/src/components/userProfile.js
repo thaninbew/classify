@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './userProfile.css';  // Optional CSS file for styling
+import './userProfile.css';
 
 const UserProfile = ({ accessToken }) => {
   const [userProfile, setUserProfile] = useState(null);
@@ -111,8 +111,8 @@ const UserProfile = ({ accessToken }) => {
         <div className="main-circle">
           <img
             src={userProfile?.images?.length > 0 ? userProfile.images[0].url : 'https://via.placeholder.com/300'}
-            alt="Profile Picture"
-            id="profile-picture"
+            alt="Profile"
+            id="profile"
             className="profile-circle"
           />
           <div className="user-name">

@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'milkman';
-  src: url('../public/fonts/milkman.ttf') format('truetype'); 
+  src: url('../../public/fonts/milkman.ttf') format('truetype'); 
 }
 
 /* General Playlist Page Styling */
