@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import UserClassification from './pages/UserClassification';
 import ClassificationResults from './pages/ClassificationResults';
 import './App.css';
+import PlaylistPage from './pages/PlaylistPage';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/user-classification" element={<UserClassification />} />
           {/* Classification Results Page */}
           <Route path="/results" element={<ClassificationResults />} />
+          <Route path="/playlist/:id" element={<PlaylistPage />} />
         </Routes>
       </div>
     </Router>

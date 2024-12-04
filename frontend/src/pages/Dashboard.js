@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Playlists from '../components/playlists';
+import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 
 const Dashboard = () => {
   const [accessToken, setAccessToken] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -21,6 +23,7 @@ const Dashboard = () => {
 
   const handlePlaylistSelect = (playlist) => {
     console.log(`Selected playlist: ${playlist.name}`);
+    navigate(`/playlist/${playlist.id}`, { state: { playlist } });
   };
 
   const logout = () => {

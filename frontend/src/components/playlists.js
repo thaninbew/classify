@@ -35,7 +35,7 @@ const Playlists = ({ accessToken, onSelect }) => {
               <PlaylistCard
                 key={playlist.id}
                 playlist={playlist}
-                onSelect={onSelect}
+                onSelect={() => onSelect(playlist)} 
               />
             )
           ))}

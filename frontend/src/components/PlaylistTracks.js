@@ -7,13 +7,18 @@ const PlaylistTracks = ({ accessToken, playlistId, onBack }) => {
 
   useEffect(() => {
     const fetchTracks = async () => {
+      if (!accessToken) {
+        console.error('No access token found.');
+        return;
+      }
+
       try {
         const response = await axios.get(`http://localhost:3001/playlists/${playlistId}/tracks`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        setTracks(response.data); // Expecting the data to be an array of tracks
+        setTracks(response.data.items || []); // Adjust based on API structure
       } catch (error) {
         console.error('Error fetching tracks:', error);
       } finally {
@@ -33,7 +38,7 @@ const PlaylistTracks = ({ accessToken, playlistId, onBack }) => {
       <ul>
         {tracks.map((track, index) => (
           <li key={track.id}>
-            <strong>{track.name}</strong> by {track.artist} - Album: {track.album}
+            <strong>{track.name}</strong> by {track.artists.map((artist) => artist.name).join(', ')} - Album: {track.album.name}
           </li>
         ))}
       </ul>
