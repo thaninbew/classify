@@ -30,7 +30,7 @@ exports.callback = async (req, res) => {
       sameSite: 'Strict',
     });
 
-    res.redirect('http://localhost:3000/dashboard');
+    res.redirect('http://localhost:3000/statsPage');
   } catch (error) {
     console.error('Error during authentication callback:', error.message);
     res.status(500).send('Authentication failed.');

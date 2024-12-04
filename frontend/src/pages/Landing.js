@@ -21,7 +21,7 @@ const validateAuth = async () => {
     });
 
     if (response.data.valid) {
-      navigate('/dashboard');
+      navigate('/statsPage');
     }
   } catch (error) {
     console.error('Authentication failed:', error.message);
