@@ -9,10 +9,12 @@ const StatsPage = () => {
 
   useEffect(() => {
     const validateAuth = async () => {
+      console.log('Validating authentication...');
       try {
         const response = await axios.get('http://localhost:3001/auth/validate', {
           withCredentials: true,
         });
+        console.log('Validation response:', response.data);
 
         if (response.data.valid) {
           setAccessToken(response.data.token);

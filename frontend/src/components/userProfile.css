@@ -3,48 +3,47 @@
     padding: 20px;
   }
   
-  .container {
+  .user-profile .container {
     display: flex;
     width: 100%;
     max-width: 1200px;
     height: 80vh;
   }
   
-  .sidebar {
+  .user-profile .sidebar {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 2rem;
+    border-radius: 20px;
     text-align: center;
   }
   
-  #back-btn {
+  .user-profile #back-btn {
     background: transparent;
     border: none;
-    color: #1ed760;
+    color: #1ED760;
     font-size: 2rem;
     cursor: pointer;
   }
   
-  #back-btn:hover {
-    color: #fff;
-  }
-  
-  .top-artists,
-  .top-tracks {
+  .user-profile .top-artists,
+  .user-profile .top-tracks {
     margin-bottom: 2rem;
+    font-family: "General Sans", sans-serif;
   }
   
-  .artist-info,
-  .track-info {
+  .user-profile .artist-info,
+  .user-profile .track-info {
     display: flex;
     align-items: center;
     gap: 2rem;
+    font-family: "General Sans", sans-serif;
   }
   
-  .artist-circle,
-  .track-circle {
+  .user-profile .artist-circle,
+  .user-profile .track-circle {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -54,30 +53,30 @@
     justify-content: center;
   }
   
-  .circle-image {
+  .user-profile .circle-image {
     width: 100%;
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
   }
   
-  ol {
+  .user-profile ol {
     list-style: none;
     padding: 0;
     margin: 0;
     text-align: left;
   }
   
-  ol li {
+  .user-profile ol li {
     margin-bottom: 0.5rem;
   }
   
-  .go-button {
+  .user-profile .go-button {
     text-align: center;
   }
   
-  #go-btn {
-    background-color: #1ed760;
+  .user-profile #go-btn {
+    background-color: #1ED760;
     border: none;
     padding: 0.5rem 2rem;
     border-radius: 30px;
@@ -85,33 +84,45 @@
     cursor: pointer;
     color: #000;
     transition: background-color 0.3s;
+    font-family: "General Sans", sans-serif;
   }
   
-  #go-btn:hover {
+  .user-profile #go-btn:hover {
     background-color: #13b943;
   }
   
-  .main {
+  .user-profile .main {
     flex: 2;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     justify-content: center;
+    position: relative;
     padding: 6rem;
     margin-left: auto;
+    width: 100%;
+    max-width: 1920px;
   }
   
-  .header h1 {
+  .user-profile .header {
+    text-align: right;
+    margin-bottom: 2rem;
+  }
+  
+  .user-profile .header h1 {
     font-size: 3rem;
     margin: 0;
+    font-family: "milkman", sans-serif;
   }
   
-  .favorites {
+  .user-profile .favorites {
     font-style: italic;
-    color: #1ed760;
+    color: #1ED760;
+    font-size: 3rem;
+    font-family: 'Ladi Gross', sans-serif;
   }
   
-  .main-circle {
+  .user-profile .main-circle {
     border: 2px solid #ffffff;
     border-radius: 50%;
     width: 270px;
@@ -120,17 +131,24 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 3rem;
+    position: relative;
+    align-self: flex-end;
   }
   
-  .profile-circle {
+  .user-profile .profile-circle {
     width: 100%;
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
+    position: absolute;
   }
   
-  .user-name {
-    color: #1ed760;
+  .user-profile .user-name {
+    color: #1ED760;
     font-size: 2rem;
+    z-index: 1;
+    text-align: center;
+    margin-top: 350px;
+    font-family: "milkman", sans-serif;
   }
   
