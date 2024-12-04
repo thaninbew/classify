@@ -2,8 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
-import UserClassification from './pages/UserClassification';
-import ClassificationResults from './pages/ClassificationResults';
 import './App.css';
 import PlaylistPage from './pages/PlaylistPage';
 
