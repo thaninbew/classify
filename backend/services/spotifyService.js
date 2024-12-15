@@ -45,7 +45,7 @@ exports.getSpotifyUserProfile = async (accessToken) => {
     });
 
     // Fetch top artists
-    const topArtistsResponse = await axios.get('https://api.spotify.com/v1/me/top/artists?limit=1', {
+    const topArtistsResponse = await axios.get('https://api.spotify.com/v1/me/top/artists?limit=3', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -59,7 +59,10 @@ exports.getSpotifyUserProfile = async (accessToken) => {
     });
 
     const userProfile = userProfileResponse.data;
-    const topArtist = topArtistsResponse.data.items[0];
+    const topArtists = topArtistsResponse.data.items.map(artist => ({
+      name: artist.name,
+      image: artist.images?.[0]?.url || null,
+    }));
     const topTrack = topTracksResponse.data.items[0];
 
     return {
@@ -68,7 +71,7 @@ exports.getSpotifyUserProfile = async (accessToken) => {
       email: userProfile.email,
       profilePicture: userProfile.images?.[0]?.url || null,
       coolFact: {
-        topArtist: topArtist ? topArtist.name : 'No top artist data',
+        topArtists,
         topTrack: topTrack ? `${topTrack.name} by ${topTrack.artists[0].name}` : 'No top track data',
       },
     };
@@ -77,6 +80,7 @@ exports.getSpotifyUserProfile = async (accessToken) => {
     throw new Error('Failed to fetch user profile');
   }
 };
+
 
 
 // Function to fetch playlists from the current user

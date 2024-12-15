@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
 import './userProfile.css';
 
 const UserProfile = ({ accessToken }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Initialize the useNavigate hook
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -33,7 +33,7 @@ const UserProfile = ({ accessToken }) => {
         setUserProfile({
           displayName,
           profilePicture: profilePicture || 'https://via.placeholder.com/300',
-          topArtist: coolFact?.topArtist || 'No top artist',
+          topArtists: coolFact?.topArtists || [], 
           topTrack: coolFact?.topTrack || 'No top track',
         });
       } catch (err) {
@@ -61,17 +61,24 @@ const UserProfile = ({ accessToken }) => {
         <div className="sidebar">
           <button id="back-btn" onClick={() => navigate('/')}>◀</button> {/* Navigate to LandingPage */}
           <div className="top-artists">
-            <h2>Your Top Artist</h2>
-            <div className="artist-info">
-              <div className="artist-circle">
-                <img
-                  src="https://via.placeholder.com/50"
-                  alt="Top Artist"
-                  id="top-artist-picture"
-                  className="circle-image"
-                />
-              </div>
-              <p>{userProfile.topArtist}</p>
+            <h2>Your Top Artists</h2>
+            <div className="artists-list">
+              {userProfile.topArtists.length > 0 ? (
+                userProfile.topArtists.map((artist, index) => (
+                  <div key={index} className="artist-info">
+                    <div className="artist-circle">
+                      <img
+                        src={artist.image || 'https://via.placeholder.com/50'}
+                        alt={artist.name}
+                        className="circle-image"
+                      />
+                    </div>
+                    <p>{artist.name}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No top artists available</p>
+              )}
             </div>
           </div>
           <div className="top-tracks">
