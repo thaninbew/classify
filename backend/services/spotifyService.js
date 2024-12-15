@@ -34,7 +34,6 @@ exports.getSpotifyToken = async (code, refreshToken) => {
   }
 };
 
-// Function to fetch the current user's Spotify profile
 exports.getSpotifyUserProfile = async (accessToken) => {
   try {
     // Fetch user profile
@@ -52,7 +51,7 @@ exports.getSpotifyUserProfile = async (accessToken) => {
     });
 
     // Fetch top tracks
-    const topTracksResponse = await axios.get('https://api.spotify.com/v1/me/top/tracks?limit=1', {
+    const topTracksResponse = await axios.get('https://api.spotify.com/v1/me/top/tracks?limit=3', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -63,7 +62,12 @@ exports.getSpotifyUserProfile = async (accessToken) => {
       name: artist.name,
       image: artist.images?.[0]?.url || null,
     }));
-    const topTrack = topTracksResponse.data.items[0];
+
+    const topTracks = topTracksResponse.data.items.map(track => ({
+      name: track.name,
+      artist: track.artists[0]?.name || 'Unknown Artist',
+      image: track.album?.images?.[0]?.url || null,
+    }));
 
     return {
       id: userProfile.id,
@@ -72,7 +76,7 @@ exports.getSpotifyUserProfile = async (accessToken) => {
       profilePicture: userProfile.images?.[0]?.url || null,
       coolFact: {
         topArtists,
-        topTrack: topTrack ? `${topTrack.name} by ${topTrack.artists[0].name}` : 'No top track data',
+        topTracks,
       },
     };
   } catch (error) {
@@ -80,6 +84,7 @@ exports.getSpotifyUserProfile = async (accessToken) => {
     throw new Error('Failed to fetch user profile');
   }
 };
+
 
 
 

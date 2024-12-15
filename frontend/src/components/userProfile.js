@@ -20,7 +20,6 @@ const UserProfile = ({ accessToken }) => {
       try {
         setLoading(true);
 
-        // Fetch user profile data from your backend
         const response = await axios.get('http://localhost:3001/playlists/user-profile', {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -33,8 +32,8 @@ const UserProfile = ({ accessToken }) => {
         setUserProfile({
           displayName,
           profilePicture: profilePicture || 'https://via.placeholder.com/300',
-          topArtists: coolFact?.topArtists || [], 
-          topTrack: coolFact?.topTrack || 'No top track',
+          topArtists: coolFact?.topArtists || [], // Fetch top three artists
+          topTracks: coolFact?.topTracks || [], // Fetch top three tracks
         });
       } catch (err) {
         console.error('Error fetching user profile:', err.message);
@@ -82,17 +81,24 @@ const UserProfile = ({ accessToken }) => {
             </div>
           </div>
           <div className="top-tracks">
-            <h2>Your Top Track</h2>
-            <div className="track-info">
-              <div className="track-circle">
-                <img
-                  src="https://via.placeholder.com/50"
-                  alt="Top Track"
-                  id="top-track-picture"
-                  className="circle-image"
-                />
-              </div>
-              <p>{userProfile.topTrack}</p>
+            <h2>Your Top Tracks</h2>
+            <div className="tracks-list">
+              {userProfile.topTracks.length > 0 ? (
+                userProfile.topTracks.map((track, index) => (
+                  <div key={index} className="track-info">
+                    <div className="track-circle">
+                      <img
+                        src={track.image || 'https://via.placeholder.com/50'}
+                        alt={track.name}
+                        className="circle-image"
+                      />
+                    </div>
+                    <p>{track.name} <br /> by {track.artist}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No top tracks available</p>
+              )}
             </div>
           </div>
           <div className="go-button">
