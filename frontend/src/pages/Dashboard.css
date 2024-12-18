@@ -19,31 +19,32 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100vh;
+    min-height: 100vh;
   }
   
   header {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding-top: 20px;
+    align-items: flex-end;
+    padding-right: 5%;
+    padding-top: 5vh;
     position: relative;
   }
   
   .stats-button {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 2%;
+    left: 2%;
     background: transparent;
     border: none;
     color: #00ff00;
-    font-size: 24px;
+    font-size: 2vw;
     cursor: pointer;
   }
   
   header h1 {
-    font-size: 42px;
-    margin: 10px 0;
+    font-size: 4vw;
+    margin: 0;
     font-weight: normal;
     font-family: 'milkman', Arial, sans-serif;
     text-transform: uppercase;
@@ -51,42 +52,47 @@
   
   header .highlight-text {
     color: #00ff00;
-    font-size: 48px;
+    font-size: 5vw;
     font-family: 'milkman', Arial, sans-serif;
-    letter-spacing: 2px;
+    letter-spacing: 0.2vw;
   }
   
   header p {
-    font-size: 14px;
+    font-size: 1.2vw;
     text-align: center;
     font-family: 'General Sans', sans-serif;
+    margin-top: 1vh;
   }
   
   footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    font-size: 12px;
+    padding: 1vh 5%;
+    font-size: 1vw;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
   }
   
   .footer-links a {
     color: #fff;
     text-decoration: none;
-    margin: 0 10px;
+    margin: 0 2vw;
     font-family: 'General Sans', sans-serif;
   }
   
   .logout-button {
     background: transparent;
     color: #fff;
-    border: 1px solid #fff;
-    padding: 5px 10px;
+    border: 0.1vw solid #fff;
+    padding: 0.5vh 1.5vw;
     cursor: pointer;
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
     font-family: 'General Sans', sans-serif;
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   
   .logout-button:hover {
