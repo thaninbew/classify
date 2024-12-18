@@ -1,154 +1,154 @@
+@font-face {
+  font-family: 'milkman';
+  src: url('../../public/fonts/milkman.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'General Sans';
+  src: url('../../public/fonts/GeneralSans-Regular.otf') format('opentype');
+}
+
 .user-profile {
-    text-align: center;
-    padding: 20px;
-  }
-  
-  .user-profile .container {
-    display: flex;
-    width: 100%;
-    max-width: 1200px;
-    height: 80vh;
-  }
-  
-  .user-profile .sidebar {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 2rem;
-    border-radius: 20px;
-    text-align: center;
-  }
-  
-  .user-profile #back-btn {
-    background: transparent;
-    border: none;
-    color: #1ED760;
-    font-size: 2rem;
-    cursor: pointer;
-  }
-  
-  .user-profile .top-artists,
-  .user-profile .top-tracks {
-    margin-bottom: 2rem;
-    font-family: "General Sans", sans-serif;
-  }
-  
-  .user-profile .artist-info,
-  .user-profile .track-info {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    font-family: "General Sans", sans-serif;
-  }
-  
-  .user-profile .artist-circle,
-  .user-profile .track-circle {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 2px solid #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .user-profile .circle-image {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .user-profile ol {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: left;
-  }
-  
-  .user-profile ol li {
-    margin-bottom: 0.5rem;
-  }
-  
-  .user-profile .go-button {
-    text-align: center;
-  }
-  
-  .user-profile #go-btn {
-    background-color: #1ED760;
-    border: none;
-    padding: 0.5rem 2rem;
-    border-radius: 30px;
-    font-size: 1rem;
-    cursor: pointer;
-    color: #000;
-    transition: background-color 0.3s;
-    font-family: "General Sans", sans-serif;
-  }
-  
-  .user-profile #go-btn:hover {
-    background-color: #13b943;
-  }
-  
-  .user-profile .main {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: center;
-    position: relative;
-    padding: 6rem;
-    margin-left: auto;
-    width: 100%;
-    max-width: 1920px;
-  }
-  
-  .user-profile .header {
-    text-align: right;
-    margin-bottom: 2rem;
-  }
-  
-  .user-profile .header h1 {
-    font-size: 3rem;
-    margin: 0;
-    font-family: "milkman", sans-serif;
-  }
-  
-  .user-profile .favorites {
-    font-style: italic;
-    color: #1ED760;
-    font-size: 3rem;
-    font-family: 'Ladi Gross', sans-serif;
-  }
-  
-  .user-profile .main-circle {
-    border: 2px solid #ffffff;
-    border-radius: 50%;
-    width: 270px;
-    height: 270px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 3rem;
-    position: relative;
-    align-self: flex-end;
-  }
-  
-  .user-profile .profile-circle {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    position: absolute;
-  }
-  
-  .user-profile .user-name {
-    color: #1ED760;
-    font-size: 2rem;
-    z-index: 1;
-    text-align: center;
-    margin-top: 350px;
-    font-family: "milkman", sans-serif;
-  }
-  
+  text-align: center;
+  padding: 2vh;
+}
+
+.user-profile .container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 5vw;
+  height: 80vh;
+  width: 90vw;
+  margin: 0 auto;
+}
+
+.user-profile .sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2vh;
+  text-align: left;
+}
+
+.user-profile #back-btn {
+  background: transparent;
+  border: none;
+  color: #1ED760;
+  font-size: 2vw;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.user-profile .top-artists,
+.user-profile .top-tracks {
+  margin-bottom: 4vh;
+  font-family: "General Sans", sans-serif;
+}
+
+.user-profile .artist-info,
+.user-profile .track-info {
+  display: flex;
+  align-items: center;
+  gap: 2vw;
+  margin-bottom: 2vh;
+}
+
+.user-profile .artist-circle,
+.user-profile .track-circle {
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+  border: 0.2vw solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-profile .circle-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-profile ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-profile ol li {
+  margin-bottom: 1vh;
+}
+
+.user-profile .go-button {
+  text-align: center;
+  margin-top: 4vh;
+}
+
+.user-profile #go-btn {
+  background-color: #1ED760;
+  border: none;
+  padding: 1vh 4vw;
+  border-radius: 30px;
+  font-size: 1.5vw;
+  cursor: pointer;
+  color: #000;
+  transition: background-color 0.3s;
+  font-family: "General Sans", sans-serif;
+}
+
+.user-profile #go-btn:hover {
+  background-color: #13b943;
+}
+
+.user-profile .main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  padding: 5vh;
+}
+
+.user-profile .header {
+  text-align: right;
+}
+
+.user-profile .header h1 {
+  font-size: 3vw;
+  margin-bottom: 2vh;
+  font-family: "milkman", sans-serif;
+}
+
+.user-profile .favorites {
+  font-style: italic;
+  color: #1ED760;
+  font-size: 3vw;
+  font-family: 'Ladi Gross', sans-serif;
+}
+
+.user-profile .main-circle {
+  width: 12vw;
+  height: 12vw;
+  border-radius: 50%;
+  border: 0.2vw solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4vh 0;
+}
+
+.user-profile .profile-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-profile .user-name {
+  color: #1ED760;
+  font-size: 2.5vw;
+  font-family: "milkman", sans-serif;
+  text-align: center;
+}
