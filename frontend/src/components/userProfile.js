@@ -108,7 +108,7 @@ const UserProfile = ({ accessToken }) => {
         <div className="main">
           <div className="header">
             <h1>
-              Your All Time <span className="favorites">Favorites</span>
+              Your All Time <span className="favorites">FAVORITES</span>
             </h1>
           </div>
           <div className="main-circle">

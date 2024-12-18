@@ -62,7 +62,6 @@ exports.logout = (req, res) => {
 
 exports.validateAuth = async (req, res) => {
   const token = req.cookies.access_token;
-  console.log('Cookies received in validateAuth:', req.cookies);
 
   if (!token) {
     return res.status(401).json({ valid: false, error: 'Access token is missing or invalid.' });
