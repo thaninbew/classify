@@ -2,6 +2,7 @@ import React from 'react';
 import './playlistCard.css';
 
 const PlaylistCard = ({ playlist, onSelect }) => {
+  
   return (
     <div
       className="playlist-card"
@@ -20,7 +21,6 @@ const PlaylistCard = ({ playlist, onSelect }) => {
       />
       <div className="playlist-info">
         <h3>{playlist.name}</h3>
-        <span>{playlist.tracks.total} tracks</span>
       </div>
     </div>
   );
