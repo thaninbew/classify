@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Playlists from '../components/playlists';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Dashboard.css';
 
 const Dashboard = () => {
   const [accessToken, setAccessToken] = useState('');
@@ -45,18 +46,29 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <header>
-        <h1>Your Playlists</h1>
-        <p>Browse and classify your playlists below.</p>
+        <button className="stats-button" onClick={() => navigate('/statsPage')}>
+          &#9665;
+        </button>
+        <h1>
+          NAME's <span className="highlight-text">playlists</span>
+        </h1>
+        <p>select the playlist you want to classify</p>
       </header>
+
       {!accessToken ? (
         <p>Loading... Please log in again if this persists.</p>
       ) : (
         <Playlists accessToken={accessToken} onSelect={handlePlaylistSelect} />
       )}
+
       <footer>
-        <button onClick={logout}>Logout</button>
-        <a href="/about">About</a>
-        <a href="/privacy">Privacy</a>
+        <div className="footer-links">
+          <a href="/about">ABOUT</a>
+          <a href="/privacy">PRIVACY</a>
+        </div>
+        <button className="logout-button" onClick={logout}>
+          LOGOUT
+        </button>
       </footer>
     </div>
   );

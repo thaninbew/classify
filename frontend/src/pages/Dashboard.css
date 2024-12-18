@@ -1,0 +1,96 @@
+@font-face {
+    font-family: 'milkman';
+    src: url('../../public/fonts/milkman.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'General Sans';
+    src: url('../../public/fonts/GeneralSans-Regular.otf') format('opentype');
+  }
+  
+  body {
+    margin: 0;
+    background-color: #000;
+    color: #00ff00;
+    font-family: 'milkman', Arial, sans-serif;
+  }
+  
+  .dashboard-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+  }
+  
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    position: relative;
+  }
+  
+  .stats-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: transparent;
+    border: none;
+    color: #00ff00;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  header h1 {
+    font-size: 42px;
+    margin: 10px 0;
+    font-weight: normal;
+    font-family: 'milkman', Arial, sans-serif;
+    text-transform: uppercase;
+  }
+  
+  header .highlight-text {
+    color: #00ff00;
+    font-size: 48px;
+    font-family: 'milkman', Arial, sans-serif;
+    letter-spacing: 2px;
+  }
+  
+  header p {
+    font-size: 14px;
+    text-align: center;
+    font-family: 'General Sans', sans-serif;
+  }
+  
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    font-size: 12px;
+  }
+  
+  .footer-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-family: 'General Sans', sans-serif;
+  }
+  
+  .logout-button {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 5px 10px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-family: 'General Sans', sans-serif;
+  }
+  
+  .logout-button:hover {
+    background-color: #00ff00;
+    color: #000;
+  }
+  
