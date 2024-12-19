@@ -6,10 +6,12 @@ import './App.css';
 import PlaylistPage from './pages/PlaylistPage';
 import UserClassification from './pages/UserClassification';
 import StatsPage from './pages/StatsPage';
+import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
   return (
     <Router>
+    <ScrollToTop />
       <div className="App">
         <Routes>
           {/* Landing Page */}
