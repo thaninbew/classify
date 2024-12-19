@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLoading } from './LoadingContext';
+import { useLoading } from '../LoadingContext';
 import './LoadingOverlay.css';
 
 const LoadingOverlay = () => {
@@ -9,7 +9,11 @@ const LoadingOverlay = () => {
 
   return (
     <div className="loading-overlay">
-      <div className="spinner"></div>
+      <div className="spinner-container">
+        <div className="spinner">
+          &#10038;
+        </div>
+      </div>
     </div>
   );
 };

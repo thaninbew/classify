@@ -3,23 +3,24 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import './userProfile.css';
+import { useLoading } from '../LoadingContext';
 
 const UserProfile = ({ accessToken }) => {
   const [userProfile, setUserProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { setIsLoading } = useLoading();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (!accessToken) {
         setError('Access token not provided.');
-        setLoading(false);
         return;
       }
 
+      setIsLoading(true);
+
       try {
-        setLoading(true);
 
         const response = await axios.get('http://localhost:3001/playlists/user-profile', {
           headers: {
@@ -42,17 +43,16 @@ const UserProfile = ({ accessToken }) => {
         console.error('Error fetching user profile:', err.message);
         setError('Failed to load user profile.');
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     fetchUserProfile();
-  }, [accessToken]);
+  }, [accessToken, setIsLoading]);
 
-  if (loading) {
+  if (!userProfile) {
     return <div>Loading...</div>;
   }
-
   if (error) {
     return <div>{error}</div>;
   }
