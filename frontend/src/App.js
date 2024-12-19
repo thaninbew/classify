@@ -4,6 +4,7 @@ import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import './App.css';
 import PlaylistPage from './pages/PlaylistPage';
+import UserClassification from './pages/UserClassification';
 import StatsPage from './pages/StatsPage';
 
 const App = () => {
@@ -17,8 +18,10 @@ const App = () => {
           <Route path="/statsPage" element={<StatsPage />} />
           {/* Dashboard Page */}
           <Route path="/dashboard" element={<Dashboard />} />
-          {/* User Classify Page */}
+          {/* Playlist Viewing Page */}
           <Route path="/playlist/:id" element={<PlaylistPage />} />
+          {/* User Classification Page */}
+          <Route path="/classification" element={<UserClassification />} />
         </Routes>
       </div>
     </Router>
