@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PlaylistTracks from '../components/PlaylistTracks';
+import './Dashboard.css'; // Import the same CSS as Dashboard
 
 const PlaylistPage = () => {
   const location = useLocation();
@@ -16,12 +17,24 @@ const PlaylistPage = () => {
   };
 
   return (
-    <div className="playlist-page-container">
+    <div className="dashboard-container">
       <header>
+        <button className="stats-button blink-on-hover" onClick={() => navigate('/dashboard')}>
+          &#9665;
+        </button>
         <h1>{playlist.name}</h1>
         <p>{playlist.description || 'No description available'}</p>
       </header>
       <PlaylistTracks playlistId={playlist.id} onBack={handleBack} />
+      <footer>
+        <div className="footer-links">
+          <a href="/about">ABOUT</a>
+          <a href="/privacy">PRIVACY</a>
+        </div>
+        <button className="logout-button blink-on-hover" onClick={() => navigate('/')}>
+          LOGOUT
+        </button>
+      </footer>
     </div>
   );
 };
