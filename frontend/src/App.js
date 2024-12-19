@@ -7,10 +7,14 @@ import PlaylistPage from './pages/PlaylistPage';
 import UserClassification from './pages/UserClassification';
 import StatsPage from './pages/StatsPage';
 import ScrollToTop from './components/ScrollToTop';
+import { LoadingProvider } from './LoadingContext';
+import LoadingOverlay from './components/LoadingOverlay';
 
 const App = () => {
   return (
+    <LoadingProvider>
     <Router>
+    <LoadingOverlay />
     <ScrollToTop />
       <div className="App">
         <Routes>
@@ -27,6 +31,7 @@ const App = () => {
         </Routes>
       </div>
     </Router>
+    </LoadingProvider>
   );
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PlaylistTracks from '../components/PlaylistTracks';
-import './Dashboard.css'; // Import the same CSS as Dashboard
+import './Dashboard.css';
 
 const PlaylistPage = () => {
   const location = useLocation();
