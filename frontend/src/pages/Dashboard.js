@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import Playlists from '../components/playlists';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import './Dashboard.css';
 
 const Dashboard = () => {
   const [accessToken, setAccessToken] = useState('');
   const navigate = useNavigate();
+  const displayName = Cookies.get('displayName') || 'User';
 
   useEffect(() => {
     const validateAuth = async () => {
@@ -50,7 +52,7 @@ const Dashboard = () => {
           &#9665;
         </button>
         <h1>
-          NAME's <span className="highlight-text">playlists</span>
+          {displayName}'s <span className="highlight-text">playlists</span>
         </h1>
         <p>select the playlist you want to classify</p>
       </header>

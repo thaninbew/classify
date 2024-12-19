@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import './userProfile.css';
 
 const UserProfile = ({ accessToken }) => {
@@ -35,6 +36,8 @@ const UserProfile = ({ accessToken }) => {
           topArtists: coolFact?.topArtists || [], // Fetch top three artists
           topTracks: coolFact?.topTracks || [], // Fetch top three tracks
         });
+
+        Cookies.set('displayName', displayName);
       } catch (err) {
         console.error('Error fetching user profile:', err.message);
         setError('Failed to load user profile.');
