@@ -3,7 +3,7 @@ import axios from 'axios';
 import PlaylistCard from './playlistCard';
 import './playlistCard.css';
 
-const Playlists = ({ accessToken, onSelect }) => {
+const Playlists = ({ accessToken }) => {
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,7 +44,6 @@ const Playlists = ({ accessToken, onSelect }) => {
               <PlaylistCard
                 key={playlist.id}
                 playlist={playlist}
-                onSelect={() => onSelect(playlist)}
               />
             )
           ))}

@@ -1,17 +1,28 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './playlistCard.css';
 
-const PlaylistCard = ({ playlist, onSelect }) => {
-  
+const PlaylistCard = ({ playlist }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate('/classification', { state: { playlist } });
+  };
+
+  const handleButtonClick = (event) => {
+    event.stopPropagation();
+    navigate(`/playlist/${playlist.id}`, { state: { playlist } });
+  };
+
   return (
     <div
       className="playlist-card"
-      onClick={onSelect}
+      onClick={handleCardClick}
       role="button"
       tabIndex="0"
       aria-label={`Select playlist ${playlist.name}`}
-      keypress={(e) => {
-        if (e.key === 'Enter') onSelect();
+      onKeyPress={(e) => {
+        if (e.key === 'Enter') handleCardClick();
       }}
     >
       <img
@@ -22,6 +33,9 @@ const PlaylistCard = ({ playlist, onSelect }) => {
       <div className="playlist-info">
         <h3>{playlist.name}</h3>
       </div>
+      <button className="playlist-button" onClick={handleButtonClick}>
+      	&#9207;
+      </button>
     </div>
   );
 };

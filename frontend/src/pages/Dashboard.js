@@ -31,11 +31,6 @@ const Dashboard = () => {
     validateAuth();
   }, [navigate]);
 
-  const handlePlaylistSelect = (playlist) => {
-    console.log(`Selected playlist: ${playlist.name}`);
-    navigate(`/playlist/${playlist.id}`, { state: { playlist } });
-  };
-
   const logout = async () => {
     try {
       await axios.get('http://localhost:3001/auth/logout', { withCredentials: true });
@@ -60,7 +55,7 @@ const Dashboard = () => {
       {!accessToken ? (
         <p>Loading... Please log in again if this persists.</p>
       ) : (
-        <Playlists accessToken={accessToken} onSelect={handlePlaylistSelect} />
+        <Playlists accessToken={accessToken} />
       )}
 
       <footer>
