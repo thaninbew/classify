@@ -17,11 +17,6 @@ html {
   padding-left: 3%;
 }
 
-body {
-  padding-left: 0%;
-  margin-bottom: 3%;
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -40,8 +35,11 @@ body {
 @font-face {
   font-family: 'Ladi Gross';
   src: url('../public/fonts/Ladi-Gross.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Saint';
+  src: url('../public/fonts/Saint\ Regular.ttf') format('opentype');
 }
 
 h1 {
