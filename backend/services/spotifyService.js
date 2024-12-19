@@ -124,6 +124,8 @@ exports.getSpotifyPlaylistTracks = async (accessToken, playlistId, offset = 0, l
           name: track.name,
           artist: track.artists.map((artist) => artist.name).join(', '),
           album: track.album.name,
+          duration: track.duration_ms,
+          images: track.album?.images,
         };
       }
       return null;
