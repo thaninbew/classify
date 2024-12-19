@@ -13,6 +13,7 @@
     flex-direction: column;
     justify-content: space-between;
     min-height: 100vh;
+    padding-bottom: 5%;
   }
   
   header {
@@ -46,7 +47,7 @@
   header .highlight-text {
     color: #00ff00;
     font-size: 5vw;
-    font-family: 'milkman', Arial, sans-serif;
+    font-family: 'Saint', Arial, sans-serif;
     letter-spacing: 0.2vw;
   }
   
@@ -92,4 +93,4 @@
     background-color: #00ff00;
     color: #000;
   }
-  
+
