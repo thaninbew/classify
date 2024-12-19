@@ -1,0 +1,60 @@
+.track-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #1e1e1e;
+    color: white;
+    margin: 5px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    height: 60px;
+  }
+  
+  .track-album-art {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    margin-right: 15px;
+    flex-shrink: 0;
+  }
+  
+  .track-details {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 20px;
+    overflow: hidden;
+  }
+  
+  .track-name,
+  .track-artist,
+  .track-album {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 15px;
+  }
+  
+  .track-name {
+    font-weight: bold;
+    flex: 2;
+  }
+  
+  .track-artist {
+    flex: 1;
+    color: #bbb;
+  }
+  
+  .track-album {
+    flex: 1;
+    color: #bbb;
+    text-align: right;
+  }
+  
+  .track-duration {
+    color: #bbb;
+    flex-shrink: 0;
+  }
+  

@@ -1,0 +1,16 @@
+.playlist-tracks {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .tracks-container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto; 
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
