@@ -101,8 +101,8 @@ const UserProfile = ({ accessToken }) => {
               )}
             </div>
           </div>
-          <div className="go-button">
-            <button id="go-btn" onClick={() => navigate('/dashboard')}>Let's Go ▶</button> {/* Navigate to Dashboard */}
+          <div className="go-button blink-on-hover">
+            <button id="go-btn" onClick={() => navigate('/dashboard')}>Let's Go ▶</button>
           </div>
         </div>
         <div className="main">
