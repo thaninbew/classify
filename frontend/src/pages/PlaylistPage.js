@@ -23,7 +23,7 @@ const PlaylistPage = () => {
           &#9665;
         </button>
         <h1>{playlist.name}</h1>
-        <p>{playlist.description || 'No description available'}</p>
+        <p>{playlist.description}</p>
       </header>
       <PlaylistTracks playlistId={playlist.id} onBack={handleBack} />
       <footer>
