@@ -26,14 +26,29 @@
   }
   
   .stats-button {
-    position: absolute;
-    top: 2%;
-    left: 2%;
+    position: fixed; 
+    top: 5vh; 
+    left: 5%; 
     background: transparent;
     border: none;
     color: #00ff00;
     font-size: 2vw;
     cursor: pointer;
+    z-index: 1000; 
+    transition: top 0.3s ease, left 0.3s ease;
+  }
+
+  .blink-on-hover:hover {
+    animation: blink 0.1s ease-in-out 2;
+  }
+
+  @keyframes blink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
   }
   
   header h1 {
@@ -63,7 +78,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1vh 5%;
-    font-size: 1vw;
+    font-size: clamp(20px, 1vw, 36px);
     position: fixed;
     bottom: 0;
     width: 100%;
