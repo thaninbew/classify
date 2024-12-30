@@ -4,6 +4,10 @@ from collections import Counter
 def match_tracks_to_clusters(features, track_metadata, num_clusters):
     """
     Matches tracks to clusters based on audio features and assigns dominant genres to clusters.
+
+    Dataset format:
+    - 'features': 2D array (n_tracks x n_features), e.g., [[danceability, energy, tempo, valence, acousticness], ...]
+    - 'track_metadata': list of dicts, each with 'name', 'artist', 'genres' (list of strings)
     
     Args:
         features (list of list of floats): 2D array where each row represents audio features of a track.

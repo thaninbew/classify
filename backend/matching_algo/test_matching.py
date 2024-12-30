@@ -2,9 +2,9 @@ import sys
 from pathlib import Path
 
 # Add the `backend/matching_algo` directory to sys.path
-sys.path.append(str(Path(__file__).resolve().parent))
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-from matching import match_tracks_to_clusters
+from matching_algo import match_tracks_to_clusters
 import numpy as np
 import random
 import matplotlib.pyplot as plt
