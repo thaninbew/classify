@@ -43,10 +43,8 @@ def generate_test_data(num_tracks=50, num_genres=10):
 # Generate a larger dataset
 features, track_metadata = generate_test_data(num_tracks=100, num_genres=10)
 
-n_clusters = 5  # Set the number of clusters
-
 # Run the matching algorithm
-result = match_tracks_to_clusters(features, track_metadata, n_clusters)
+result = match_tracks_to_clusters(features, track_metadata)
 
 # Get the cluster labels
 labels = [None] * len(features)

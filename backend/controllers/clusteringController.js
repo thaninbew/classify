@@ -5,7 +5,7 @@ const PYTHON_SERVER = 'http://localhost:5000';
 
 exports.clusterPlaylistTracks = async (req, res) => {
     try {
-        const { tracks, n_clusters = 5 } = req.body;
+        const { tracks, algorithm = 'kmeans' } = req.body;
         
         if (!tracks || !Array.isArray(tracks)) {
             return res.status(400).json({ error: 'Tracks array is required' });
@@ -16,7 +16,7 @@ exports.clusterPlaylistTracks = async (req, res) => {
             track.features.danceability,
             track.features.energy,
             track.features.valence,
-            track.features.tempo / 200, // Normalize tempo to 0-1 range
+            track.features.tempo,
             track.features.acousticness
         ]);
 
@@ -30,7 +30,7 @@ exports.clusterPlaylistTracks = async (req, res) => {
         const pythonResponse = await axios.post(`${PYTHON_SERVER}/cluster`, {
             features: features,
             track_metadata: track_metadata,
-            n_clusters: n_clusters
+            algorithm: algorithm
         });
 
         res.json(pythonResponse.data);
