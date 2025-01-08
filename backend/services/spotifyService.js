@@ -156,3 +156,20 @@ exports.getSpotifyTrackFeatures = async (accessToken, trackId) => {
     throw new Error('Failed to fetch track features');
   }
 };
+
+exports.getSpotifyMultipleTrackFeatures = async (accessToken, trackIds) => {
+  try {
+    const idsParam = trackIds.join(',');
+    const response = await axios.get(`https://api.spotify.com/v1/audio-features?ids=${idsParam}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    console.log('Response headers:', response.headers);
+    console.log('Response data:', response.data);
+    return response.data.audio_features;
+  } catch (error) {
+    console.error('Error fetching multiple track features:', error.response?.data || error.message);
+    throw new Error('Failed to fetch multiple track features');
+  }
+};
