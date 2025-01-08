@@ -6,6 +6,7 @@ const playlistRoutes = require('./routes/playlistRoutes');
 const openAIRoutes = require('./routes/openAIRoutes');
 const clusteringRoutes = require('./routes/clusteringRoutes');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
 const app = express();
 app.use(cookieParser());
@@ -23,11 +24,12 @@ app.use(cors({
   credentials: true, // Allow cookies to be sent
 }));
 app.use(express.json());
+app.use(bodyParser.json());
 
 // Routes
 app.use('/auth', authRoutes);
 app.use('/playlists', playlistRoutes);
 app.use('/openai', openAIRoutes);
-app.use('/clustering', clusteringRoutes);
+app.use('/cluster', clusteringRoutes);
 
 module.exports = app;

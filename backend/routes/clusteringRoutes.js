@@ -4,6 +4,6 @@ const validateAccessToken = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-router.post('/cluster', validateAccessToken, clusterPlaylistTracks);
+router.post('/clusterPlaylistTracks', validateAccessToken, clusterPlaylistTracks);
 
 module.exports = router;
