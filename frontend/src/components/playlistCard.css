@@ -6,7 +6,7 @@
 .playlists-container {
   text-align: center;
   margin: 20px auto;
-  padding: 10px;
+  padding: 20px;
   max-width: 1200px;
   width: 100%;
   background-color: #000;
@@ -18,7 +18,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   row-gap: 80px;
-  column-gap: 20px;
+  column-gap: 50px;
   justify-items: center;
 }
 
@@ -65,25 +65,25 @@
 }
 
 .playlist-button {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  background-color: transparent;
-  color: white; 
-  border: 1px solid white;
-  mix-blend-mode: difference;
-  border-radius: 0;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
   display: flex;
+  position: absolute;
+  bottom: 10px; 
+  left: 10px; 
+  background-color: #1ED760; 
+  color: black;
+  border: none; 
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
-  font-family: 'saint', sans-serif;
-  opacity: 0;
-  transition: opacity 0.1s ease, transform 0.1s ease, box-shadow 0.1s ease;
-  box-shadow: 0 4px 6px rgba(0, 255, 0, 0.5);
+  font-size: 20px; 
+  text-align: center;
+  mix-blend-mode: normal; 
+  box-shadow: 0 4px 6px rgba(0, 255, 0, 0.5); 
+  opacity: 0; 
+  transition: opacity 0.1s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .playlist-card:hover .playlist-button {
@@ -95,6 +95,7 @@
   transform: scale(1.2); 
   box-shadow: 0 6px 8px rgba(0, 255, 0, 0.7); 
 }
+
 @media (max-width: 768px) {
   .playlist-card {
     width: 90%;

@@ -34,7 +34,7 @@ const PlaylistCard = ({ playlist }) => {
         <h3>{playlist.name}</h3>
       </div>
       <button className="playlist-button" onClick={handleButtonClick}>
-      	&#9207;
+       ▶
       </button>
     </div>
   );
