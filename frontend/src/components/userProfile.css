@@ -8,41 +8,28 @@
   src: url('../../public/fonts/GeneralSans-Regular.otf') format('opentype');
 }
 
-.user-profile {
-  text-align: center;
-  padding: 2vh;
-}
-
 .user-profile .container {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 5vw;
-  height: 80vh;
+  grid-template-columns: 1fr 1fr;
   width: 90vw;
   margin: 0 auto;
-}
-
-.user-profile .sidebar {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 2vh;
-  text-align: left;
+  padding: 3vh;
 }
 
 .user-profile #back-btn {
   background: transparent;
   border: none;
   color: #1ED760;
-  font-size: 2vw;
+  font-size: 3vw;
   cursor: pointer;
-  align-self: flex-start;
+  margin-left: -8vh;
 }
 
 .user-profile .top-artists,
 .user-profile .top-tracks {
   margin-bottom: 4vh;
   font-family: "General Sans", sans-serif;
+  font-size: large;
 }
 
 .user-profile .artist-info,
@@ -55,10 +42,10 @@
 
 .user-profile .artist-circle,
 .user-profile .track-circle {
-  width: 5vw;
-  height: 5vw;
+  width: 5.5vw;
+  height: 5.5vw;
   border-radius: 50%;
-  border: 0.2vw solid #ffffff;
+  border: 0.1vw solid #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,25 +58,10 @@
   object-fit: cover;
 }
 
-.user-profile ol {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.user-profile ol li {
-  margin-bottom: 1vh;
-}
-
-.user-profile .go-button {
-  text-align: center;
-  margin-top: 4vh;
-}
-
 .user-profile #go-btn {
   background-color: #1ED760;
   border: none;
-  padding: 1vh 4vw;
+  padding: 1vh 3vw;
   border-radius: 30px;
   font-size: 1.5vw;
   cursor: pointer;
@@ -108,7 +80,7 @@
   justify-content: center;
   align-items: flex-end;
   position: relative;
-  padding: 5vh;
+  padding: 4vh;
 }
 
 .user-profile .header {
@@ -116,27 +88,26 @@
 }
 
 .user-profile .header h1 {
-  font-size: 3vw;
-  margin-bottom: 2vh;
-  font-family: "milkman", sans-serif;
+  font-size: 3.5vw;
+  margin: 0;
+  font-family: 'milkman', sans-serif; 
+  text-transform: lowercase;
 }
 
 .user-profile .favorites {
-  font-style: italic;
-  color: #1ED760;
-  font-size: 3vw;
-  font-family: 'Ladi Gross', sans-serif;
+  color: #1ED760; 
+  font-size: 4.5vw;
+  font-family: 'Ladi Gross', sans-serif; 
+  margin-top: -1vh; 
 }
 
 .user-profile .main-circle {
-  width: 12vw;
-  height: 12vw;
+  width: 50vh;
+  height: 50vh;
   border-radius: 50%;
-  border: 0.2vw solid #ffffff;
-  display: flex;
+  border: 0.1vw solid #ffffff;
   align-items: center;
-  justify-content: center;
-  margin: 4vh 0;
+  margin: 10vh 0;
 }
 
 .user-profile .profile-circle {
@@ -147,8 +118,9 @@
 }
 
 .user-profile .user-name {
-  color: #1ED760;
+  color: #ffffff;
   font-size: 2.5vw;
   font-family: "milkman", sans-serif;
   text-align: center;
+  text-transform: lowercase;
 }
