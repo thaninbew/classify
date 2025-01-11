@@ -20,7 +20,7 @@ const PlaylistPage = () => {
     <div className="dashboard-container">
       <header>
         <button className="stats-button blink-on-hover" onClick={() => navigate('/dashboard')}>
-          &#9665;
+        ◀
         </button>
         <h1>{playlist.name}</h1>
         <p>{playlist.description}</p>

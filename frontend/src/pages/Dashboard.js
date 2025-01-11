@@ -52,7 +52,7 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <header>
         <button className="stats-button blink-on-hover" onClick={() => navigate('/statsPage')}>
-          &#9665;
+        ◀
         </button>
         <h1>
           {displayName}'s <span className="highlight-text">playlists</span>

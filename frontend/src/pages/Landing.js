@@ -36,7 +36,9 @@ const validateAuth = async () => {
     <div className="landing-container">
       <header className="landing-header">
         <h1>
-          welcome to <span className="classify-highlight">classify,</span>
+          <span>welcome to</span>
+          <br />
+          <span class="classify-highlight">CLASSIFY</span>
         </h1>
         <p>
           tired of having too many songs mixed together in one playlist? start generating custom playlists from your spotify using AI
