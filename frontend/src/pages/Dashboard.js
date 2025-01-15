@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useLoading } from '../LoadingContext';
 import Cookies from 'js-cookie';
 import './Dashboard.css';
+import Logout from '../components/Logout';
 
 const Dashboard = () => {
   const [accessToken, setAccessToken] = useState('');
@@ -69,9 +70,7 @@ const Dashboard = () => {
           <a href="/about">ABOUT</a>
           <a href="/privacy">PRIVACY</a>
         </div>
-        <button className="logout-button blink-on-hover" onClick={logout}>
-          LOGOUT
-        </button>
+        <Logout />
       </footer>
     </div>
   );

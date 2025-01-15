@@ -12,6 +12,7 @@
         "nodemon": "^2.0.22"
     },
     "dependencies": {
+        "curl": "^0.1.4",
         "js-cookie": "^3.0.5",
         "react-router-dom": "^7.1.1"
     }
