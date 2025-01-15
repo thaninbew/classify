@@ -6,12 +6,12 @@ const PlaylistCard = ({ playlist }) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate('/classification', { state: { playlist } });
+    navigate(`/playlist/${playlist.id}`, { state: { playlist } });
   };
 
   const handleButtonClick = (event) => {
     event.stopPropagation();
-    navigate(`/playlist/${playlist.id}`, { state: { playlist } });
+    navigate('/classification', { state: { playlist } });
   };
 
   return (
