@@ -1,121 +1,136 @@
-import sys
-from pathlib import Path
-
-# Add the `backend/matching_algo` directory to sys.path
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-
-from matching_algo import match_tracks_to_clusters
+import unittest
+import os
 import numpy as np
-import random
-import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
-from sklearn.manifold import TSNE
+from dotenv import load_dotenv
+from matching_algo.matching import (
+    get_lastfm_tags,
+    create_feature_vector,
+    build_tag_vocabulary,
+    match_tracks_to_clusters
+)
 
-# Generate larger test data
-def generate_test_data(num_tracks=50, num_genres=10):
-    genres = [
-        "Pop", "Rock", "Jazz", "Classical", "Hip-Hop", "R&B", 
-        "Country", "Electronic", "Blues", "Dance"
-    ]
-    track_metadata = []
-    features = []
+class TestMatchingAlgorithm(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        """Set up test fixtures before running tests"""
+        load_dotenv()
+        cls.api_key = os.getenv('LASTFM_API_KEY')
+        if not cls.api_key:
+            raise ValueError("LASTFM_API_KEY not found in environment variables")
+        
+        # Test data
+        cls.test_tracks = [
+            {"name": "Bohemian Rhapsody", "artist": "Queen"},
+            {"name": "Stairway to Heaven", "artist": "Led Zeppelin"},
+            {"name": "Smells Like Teen Spirit", "artist": "Nirvana"},
+            {"name": "Beat It", "artist": "Michael Jackson"},
+            {"name": "Sweet Child O' Mine", "artist": "Guns N' Roses"}
+        ]
 
-    for i in range(num_tracks):
-        # Randomly generate track metadata
-        track = {
-            "name": f"Track {i+1}",
-            "artist": f"Artist {random.randint(1, 20)}",
-            "genres": random.sample(genres, k=random.randint(1, 2))  # 1-2 genres per track
-        }
-        track_metadata.append(track)
+    def test_lastfm_tag_fetching(self):
+        """Test fetching tags from Last.fm"""
+        track = self.test_tracks[0]
+        tags = get_lastfm_tags(track['artist'], track['name'], self.api_key)
+        
+        self.assertIsInstance(tags, list)
+        self.assertTrue(len(tags) > 0, "Should get at least one tag")
+        self.assertTrue(all(isinstance(tag, str) for tag in tags))
 
-        # Randomly generate audio features (e.g., danceability, energy, tempo, etc.)
-        features.append([
-            random.uniform(0, 1),  # Danceability
-            random.uniform(0, 1),  # Energy
-            random.uniform(50, 200),  # Tempo
-            random.uniform(0, 1),  # Valence
-            random.uniform(0, 1)   # Acousticness
-        ])
-    
-    return np.array(features), track_metadata
+    def test_tag_vocabulary_building(self):
+        """Test building tag vocabulary"""
+        test_tags = [
+            ['rock', 'classic rock', 'hard rock'],
+            ['pop', 'dance', '80s'],
+            ['rock', 'grunge', 'alternative']
+        ]
+        
+        vocabulary = build_tag_vocabulary(test_tags)
+        
+        self.assertIsInstance(vocabulary, dict)
+        unique_tags = set(tag.lower() for tags in test_tags for tag in tags)
+        self.assertEqual(len(vocabulary), len(unique_tags))
+        self.assertTrue(all(isinstance(idx, int) for idx in vocabulary.values()))
 
-# Generate a larger dataset
-features, track_metadata = generate_test_data(num_tracks=100, num_genres=10)
+    def test_feature_vector_creation(self):
+        """Test creating feature vectors from tags"""
+        tags = ['rock', 'classic rock']
+        vocabulary = {'rock': 0, 'classic rock': 1, 'pop': 2}
+        
+        vector = create_feature_vector(tags, vocabulary)
+        
+        self.assertIsInstance(vector, np.ndarray)
+        self.assertEqual(len(vector), 3)
+        self.assertEqual(vector[0], 1)  # rock
+        self.assertEqual(vector[1], 1)  # classic rock
+        self.assertEqual(vector[2], 0)  # pop
 
-# Run the matching algorithm
-result = match_tracks_to_clusters(features, track_metadata)
+    def test_clustering_basic(self):
+        """Test basic clustering functionality"""
+        dummy_features = [[1, 1], [1, 2], [2, 1], [2, 2], [3, 3]]
+        
+        result = match_tracks_to_clusters(dummy_features, self.test_tracks)
+        
+        self.assertIsInstance(result, dict)
+        self.assertIn('clusters', result)
+        self.assertTrue(len(result['clusters']) >= 1)
+        
+        for cluster in result['clusters']:
+            self.assertIn('id', cluster)
+            self.assertIn('genre', cluster)
+            self.assertIn('tags', cluster)
+            self.assertIn('tracks', cluster)
+            self.assertIsInstance(cluster['tracks'], list)
 
-# Get the cluster labels
-labels = [None] * len(features)
-for cluster in result["clusters"]:
-    for track in cluster["tracks"]:
-        idx = next(i for i, t in enumerate(track_metadata) if t["name"] == track["name"])
-        labels[idx] = cluster["id"]
+    def test_small_dataset(self):
+        """Test handling of very small datasets"""
+        small_tracks = self.test_tracks[:2]
+        dummy_features = [[1, 1], [1, 2]]
+        
+        result = match_tracks_to_clusters(dummy_features, small_tracks)
+        
+        self.assertIsInstance(result, dict)
+        self.assertIn('clusters', result)
+        self.assertEqual(len(result['clusters']), 1)
+        self.assertEqual(result['silhouette_score'], None)
 
-# Visualization
-def visualize_clusters(features, labels, track_metadata, method="pca"):
-    """
-    Visualize the clusters using PCA or t-SNE with better labeling.
-    """
-    # Reduce dimensionality
-    if method == "pca":
-        reducer = PCA(n_components=2)
-    elif method == "tsne":
-        reducer = TSNE(n_components=2, random_state=42)
-    else:
-        raise ValueError("Invalid method. Use 'pca' or 'tsne'.")
+    def test_error_handling(self):
+        """Test error handling for invalid inputs"""
+        # Test with empty input
+        result_empty = match_tracks_to_clusters([], [])
+        self.assertIsInstance(result_empty, dict)
+        self.assertEqual(len(result_empty['clusters']), 0)
+        
+        # Test with malformed track data (missing artist)
+        malformed_tracks = [{"name": "Invalid Song"}]
+        dummy_features = [[1, 1]]
+        result_malformed = match_tracks_to_clusters(dummy_features, malformed_tracks)
+        self.assertIsInstance(result_malformed, dict)
+        self.assertIn('clusters', result_malformed)
+        self.assertEqual(result_malformed['clusters'][0]['genre'], 'unclassified')
+        self.assertEqual(len(result_malformed['clusters'][0]['tags']), 0)
+        
+        # Test with malformed track data (missing name)
+        malformed_tracks2 = [{"artist": "Unknown Artist"}]
+        result_malformed2 = match_tracks_to_clusters(dummy_features, malformed_tracks2)
+        self.assertIsInstance(result_malformed2, dict)
+        self.assertIn('clusters', result_malformed2)
+        self.assertEqual(result_malformed2['clusters'][0]['genre'], 'unclassified')
+        self.assertEqual(len(result_malformed2['clusters'][0]['tags']), 0)
 
-    reduced_features = reducer.fit_transform(features)
+    def test_cluster_metrics(self):
+        """Test that clustering metrics are calculated correctly"""
+        dummy_features = [[1, 1], [1, 2], [2, 1], [2, 2], [3, 3]]
+        result = match_tracks_to_clusters(dummy_features, self.test_tracks)
+        
+        if len(self.test_tracks) > 2:
+            self.assertIn('silhouette_score', result)
+            self.assertIn('davies_bouldin', result)
+            self.assertIn('calinski_harabasz', result)
 
-    # Map labels to cluster names for the legend
-    unique_labels = set(labels)
-    cluster_names = {label: f"Cluster {label}" for label in unique_labels}
+def run_tests():
+    """Run the test suite"""
+    print("\n=== Running Matching Algorithm Tests ===\n")
+    unittest.main(verbosity=2, argv=['dummy'])
 
-    # Plot the clusters
-    plt.figure(figsize=(12, 8))
-    for label in unique_labels:
-        # Extract points in this cluster
-        cluster_points = reduced_features[np.array(labels) == label]
-        # Scatter plot for the cluster
-        plt.scatter(
-            cluster_points[:, 0],
-            cluster_points[:, 1],
-            label=cluster_names[label],
-            s=100,
-            alpha=0.6,
-            edgecolor="k"
-        )
-
-    # Add annotations for a few points (e.g., first track in each cluster)
-    for i, (x, y) in enumerate(reduced_features):
-        if i < len(track_metadata):  # Prevent index errors
-            plt.annotate(
-                track_metadata[i]["name"],  # Annotate with the track name
-                (x, y),
-                fontsize=8,
-                alpha=0.7
-            )
-
-    # Add plot title, legend, and axis labels
-    plt.title(f"Cluster Visualization ({method.upper()})", fontsize=16)
-    plt.xlabel("Component 1", fontsize=14)
-    plt.ylabel("Component 2", fontsize=14)
-    plt.legend(loc="best", title="Clusters", fontsize=10)
-    plt.grid(alpha=0.3)
-    plt.tight_layout()
-    plt.show()
-
-
-# Visualize using PCA
-# visualize_clusters(features, labels, track_metadata, method="pca")
-
-# Uncomment this line to visualize using t-SNE
-visualize_clusters(features, labels, track_metadata, method="tsne")
-
-# Print a summary of the clustering results
-for cluster in result["clusters"]:
-    print(f"Cluster {cluster['id']} (Genre: {cluster['genre']}):")
-    for track in cluster["tracks"][:5]:  # Print first 5 tracks per cluster
-        print(f"  - {track['name']} by {track['artist']} ({', '.join(track['genres'])})")
-    print("...")
+if __name__ == '__main__':
+    run_tests()
