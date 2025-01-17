@@ -20,7 +20,6 @@
 
 body {
   margin: 0;
-  overflow: hidden; /* Disable scrollbars */
 }
 
 .user-profile #back-btn {
@@ -86,7 +85,7 @@ body {
   color: #000;
   transition: background-color 0.3s;
   font-family: "General Sans", sans-serif;
-  position: absolute;
+  position: fixed;
   bottom: 2vw; /* Distance from the bottom */
   left: 10vw;
 }
