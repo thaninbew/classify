@@ -56,7 +56,7 @@
     margin: 0;
     font-weight: normal;
     font-family: 'milkman', Arial, sans-serif;
-    text-transform: uppercase;
+    text-transform: lowercase;
   }
   
   header .highlight-text {
@@ -67,7 +67,7 @@
   }
   
   header p {
-    font-size: 1.2vw;
+    font-size: 1.6vw;
     text-align: center;
     font-family: 'General Sans', sans-serif;
     margin-top: 1vh;
