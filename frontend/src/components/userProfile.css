@@ -12,8 +12,15 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   width: 90vw;
+  height: 100vh;
   margin: 0 auto;
-  padding: 3vh;
+  padding: 3vw;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  overflow: hidden; /* Disable scrollbars */
 }
 
 .user-profile #back-btn {
@@ -22,14 +29,28 @@
   color: #1ED760;
   font-size: 3vw;
   cursor: pointer;
-  margin-left: -8vh;
+  position: absolute;
+  top: 2vw; 
+  left: 5vw;
 }
 
-.user-profile .top-artists,
-.user-profile .top-tracks {
-  margin-bottom: 4vh;
+.user-profile .sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align items to the top */
+  padding: 3vw;
+  margin-top: -8vh;
+  margin-left: 2vw;
+}
+
+.user-profile .top-artists{
   font-family: "General Sans", sans-serif;
-  font-size: large;
+  font-size: 1.2vw;
+}
+
+.user-profile .top-tracks {
+  font-family: "General Sans", sans-serif;
+  font-size:  1.1vw;
 }
 
 .user-profile .artist-info,
@@ -37,18 +58,15 @@
   display: flex;
   align-items: center;
   gap: 2vw;
-  margin-bottom: 2vh;
+  margin-bottom: 1vh;
 }
 
 .user-profile .artist-circle,
 .user-profile .track-circle {
-  width: 5.5vw;
-  height: 5.5vw;
+  width: 4.5vw;
+  height: 4.5vw;
   border-radius: 50%;
   border: 0.1vw solid #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .user-profile .circle-image {
@@ -68,6 +86,9 @@
   color: #000;
   transition: background-color 0.3s;
   font-family: "General Sans", sans-serif;
+  position: absolute;
+  bottom: 2vw; /* Distance from the bottom */
+  left: 10vw;
 }
 
 .user-profile #go-btn:hover {
@@ -77,7 +98,7 @@
 .user-profile .main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-end;
   position: relative;
   padding: 4vh;
@@ -96,18 +117,18 @@
 
 .user-profile .favorites {
   color: #1ED760; 
-  font-size: 4.5vw;
+  font-size: 7vw;
   font-family: 'Ladi Gross', sans-serif; 
   margin-top: -1vh; 
 }
 
 .user-profile .main-circle {
-  width: 50vh;
-  height: 50vh;
+  width: 40vh;
+  height: 40vh;
   border-radius: 50%;
   border: 0.1vw solid #ffffff;
   align-items: center;
-  margin: 10vh 0;
+  margin: 5vh 0;
 }
 
 .user-profile .profile-circle {
