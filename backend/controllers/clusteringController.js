@@ -56,3 +56,16 @@ exports.clusterPlaylistTracks = async (req, res) => {
         }
     }
 };
+
+exports.matchAndVisualize = async (enrichedTracks) => {
+  // post to python server: "http://localhost:5000/visualize"
+  try {
+    const response = await axios.post(`${PYTHON_SERVER}/visualize`, {
+      tracks: enrichedTracks
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error in matchAndVisualize (clusteringController):', error.message);
+    throw error;
+  }
+};
