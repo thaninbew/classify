@@ -46,91 +46,36 @@ def build_tag_vocabulary(all_tags: List[List[str]]) -> Dict[str, int]:
     return {tag: idx for idx, tag in enumerate(unique_tags)}
 
 def get_base_genre(tags: List[str]) -> str:
-    """
-    Extract the base genre from a list of tags.
-    Simplifies subgenres into their main genre category.
-    """
+    """Extract the base genre from a list of tags"""
     # Define genre mappings
     genre_mappings = {
-        'rock': ['rock', 'classic rock', 'hard rock', 'alternative rock', 'indie rock', 
-                'progressive rock', 'punk rock', 'folk rock', 'psychedelic rock'],
-        'pop': ['pop', 'synth pop', 'indie pop', 'power pop', 'electropop', 'dream pop'],
-        'metal': ['metal', 'heavy metal', 'black metal', 'death metal', 'thrash metal'],
-        'jazz': ['jazz', 'smooth jazz', 'fusion', 'bebop', 'big band'],
-        'electronic': ['electronic', 'edm', 'techno', 'house', 'trance', 'dubstep'],
-        'folk': ['folk', 'americana', 'traditional', 'singer-songwriter'],
+        'rock': ['rock', 'classic rock', 'hard rock', 'alternative rock', 
+                'indie rock', 'progressive rock', 'punk rock', 'folk rock'],
+        'pop': ['pop', 'synth pop', 'indie pop', 'power pop', 'electropop'],
         'hip hop': ['hip hop', 'rap', 'trap', 'grime'],
+        'jazz': ['jazz', 'smooth jazz', 'fusion', 'bebop', 'big band'],
+        'electronic': ['electronic', 'edm', 'techno', 'house', 'trance'],
+        'folk': ['folk', 'americana', 'traditional', 'singer-songwriter'],
+        'metal': ['metal', 'heavy metal', 'black metal', 'death metal'],
         'r&b': ['r&b', 'soul', 'funk', 'motown'],
         'blues': ['blues', 'delta blues', 'chicago blues'],
         'classical': ['classical', 'orchestra', 'symphony', 'chamber music']
     }
     
+    if not tags:
+        return 'unclassified'
+
     # Count occurrences of base genres
-    genre_counts = defaultdict(int)
+    genre_counts = {}
     for tag in tags:
         tag = tag.lower()
         for base_genre, subgenres in genre_mappings.items():
             if tag in subgenres or tag == base_genre:
-                genre_counts[base_genre] += 1
+                genre_counts[base_genre] = genre_counts.get(base_genre, 0) + 1
     
     if genre_counts:
-        # Return the most common base genre
         return max(genre_counts.items(), key=lambda x: x[1])[0]
-    return 'other'
-
-def merge_similar_clusters(clusters: List[Dict], similarity_threshold: float = 0.5) -> List[Dict]:
-    """
-    Merge clusters that have similar genre distributions
-    """
-    if not clusters:
-        return clusters
-
-    # Keep track of clusters to merge
-    merged = []
-    skip_indices = set()
-
-    for i in range(len(clusters)):
-        if i in skip_indices:
-            continue
-
-        current_cluster = clusters[i]
-        similar_clusters = []
-
-        # Look for similar clusters
-        for j in range(i + 1, len(clusters)):
-            if j in skip_indices:
-                continue
-
-            other_cluster = clusters[j]
-            
-            # Check if clusters share the same base genre
-            if current_cluster['genre'] == other_cluster['genre']:
-                # Convert lists of tags to sets of individual tags
-                current_tags = set().union(*[set(track.get('tags', [])) for track in current_cluster['tracks']])
-                other_tags = set().union(*[set(track.get('tags', [])) for track in other_cluster['tracks']])
-                
-                # Calculate Jaccard similarity
-                if current_tags or other_tags:  # Avoid division by zero
-                    similarity = len(current_tags & other_tags) / len(current_tags | other_tags)
-                    if similarity >= similarity_threshold:
-                        similar_clusters.append(j)
-                        skip_indices.add(j)
-
-        # Merge similar clusters
-        if similar_clusters:
-            merged_cluster = {
-                'id': current_cluster['id'],
-                'genre': current_cluster['genre'],
-                'tags': list(set(current_cluster['tags'] + 
-                               sum([clusters[j]['tags'] for j in similar_clusters], []))),
-                'tracks': current_cluster['tracks'] + 
-                         sum([clusters[j]['tracks'] for j in similar_clusters], [])
-            }
-            merged.append(merged_cluster)
-        else:
-            merged.append(current_cluster)
-
-    return merged
+    return 'unclassified'
 
 def match_tracks_to_clusters(features, track_metadata, algorithm="kmeans"):
     """Match tracks to clusters using Last.fm tags with genre merging"""
@@ -153,17 +98,23 @@ def match_tracks_to_clusters(features, track_metadata, algorithm="kmeans"):
         raise ValueError("LASTFM_API_KEY not found in environment variables")
 
     # Handle small datasets
-    if len(track_metadata) < 3:
-        base_genre = get_base_genre(get_lastfm_tags(
-            track_metadata[0]['artist'],
-            track_metadata[0]['name'],
-            api_key
-        ))
+    if len(track_metadata) < 2:
+        # Get tags and genre for single track
+        if track_metadata and 'artist' in track_metadata[0] and 'name' in track_metadata[0]:
+            tags = get_lastfm_tags(
+                track_metadata[0]['artist'],
+                track_metadata[0]['name'],
+                api_key
+            )
+            genre = get_base_genre(tags)
+        else:
+            genre = 'unclassified'
+            
         return {
             'clusters': [
                 {
                     'id': 0,
-                    'genre': base_genre,
+                    'genre': genre,
                     'tags': [],
                     'tracks': track_metadata
                 }
@@ -181,6 +132,7 @@ def match_tracks_to_clusters(features, track_metadata, algorithm="kmeans"):
         else:
             tags = get_lastfm_tags(track['artist'], track['name'], api_key)
         all_track_tags.append(tags)
+        track['tags'] = tags  # Store tags with track data
 
     # Build tag vocabulary and convert to feature vectors
     tag_vocabulary = build_tag_vocabulary(all_track_tags)
@@ -205,12 +157,14 @@ def match_tracks_to_clusters(features, track_metadata, algorithm="kmeans"):
         for tags in all_track_tags
     ])
 
-    # Initial clustering
-    n_clusters = min(max(2, len(track_metadata) // 3), 8)  # Adjust cluster count
+    # Determine optimal number of clusters
+    n_clusters = min(max(2, len(track_metadata) // 3), 8)  # Between 2 and 8 clusters
+    
+    # Perform clustering
     kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
     labels = kmeans.fit_predict(feature_vectors)
 
-    # Calculate metrics
+    # Calculate metrics if possible
     metrics = {}
     if len(feature_vectors) > 2 and n_clusters > 1:
         metrics['silhouette_score'] = silhouette_score(feature_vectors, labels)
@@ -226,32 +180,27 @@ def match_tracks_to_clusters(features, track_metadata, algorithm="kmeans"):
     # Group tracks by cluster
     clustered_tracks = {i: [] for i in range(n_clusters)}
     for i, label in enumerate(labels):
-        track_info = track_metadata[i].copy()
-        track_info['tags'] = all_track_tags[i]
-        clustered_tracks[label].append(track_info)
+        track = track_metadata[i].copy()
+        clustered_tracks[label].append(track)
 
-    # Create initial clusters with base genres
+    # Create initial clusters with genres
     initial_clusters = []
     for cluster_id, tracks in clustered_tracks.items():
-        # Get all tags in the cluster
-        cluster_tags = [tag for track in tracks for tag in track.get('tags', [])]
-        
-        # Determine base genre for the cluster
-        base_genre = get_base_genre(cluster_tags)
+        # Get all tags in cluster
+        cluster_tags = []
+        for track in tracks:
+            if 'tags' in track:
+                cluster_tags.extend(track['tags'])
         
         initial_clusters.append({
             'id': cluster_id,
-            'genre': base_genre,
+            'genre': get_base_genre(cluster_tags) if cluster_tags else 'unclassified',
             'tags': cluster_tags,
             'tracks': tracks
         })
 
     # Merge similar clusters
     final_clusters = merge_similar_clusters(initial_clusters)
-
-    # Reassign IDs after merging
-    for i, cluster in enumerate(final_clusters):
-        cluster['id'] = i
 
     # Prepare final result
     result = {
@@ -260,3 +209,60 @@ def match_tracks_to_clusters(features, track_metadata, algorithm="kmeans"):
     }
 
     return result
+
+def merge_similar_clusters(clusters: List[Dict], similarity_threshold: float = 0.3) -> List[Dict]:
+    """Merge clusters that have similar genre distributions"""
+    if not clusters:
+        return clusters
+
+    def get_cluster_tags(cluster):
+        """Helper function to get all unique tags from a cluster"""
+        tags = set()
+        for track in cluster['tracks']:
+            track_tags = track.get('tags', [])
+            if isinstance(track_tags, (list, tuple)):
+                tags.update(set(track_tags))
+            elif isinstance(track_tags, str):
+                tags.add(track_tags)
+        return tags
+
+    # Group clusters by genre
+    genre_groups = defaultdict(list)
+    for cluster in clusters:
+        genre_groups[cluster['genre']].append(cluster)
+    
+    # Merge clusters within each genre group
+    merged_clusters = []
+    for genre, group in genre_groups.items():
+        while group:
+            base_cluster = group.pop(0)
+            base_tags = get_cluster_tags(base_cluster)
+            
+            merged_tracks = base_cluster['tracks'].copy()
+            merged_tags = base_tags.copy()
+            
+            # Find similar clusters to merge
+            i = 0
+            while i < len(group):
+                other_cluster = group[i]
+                other_tags = get_cluster_tags(other_cluster)
+                
+                # Calculate Jaccard similarity
+                if base_tags or other_tags:
+                    similarity = len(base_tags & other_tags) / len(base_tags | other_tags) if (base_tags | other_tags) else 0
+                    if similarity >= similarity_threshold:
+                        merged_tracks.extend(other_cluster['tracks'])
+                        merged_tags.update(other_tags)
+                        group.pop(i)
+                    else:
+                        i += 1
+            
+            # Create merged cluster
+            merged_clusters.append({
+                'id': len(merged_clusters),
+                'genre': genre,
+                'tags': list(merged_tags),
+                'tracks': merged_tracks
+            })
+    
+    return merged_clusters
