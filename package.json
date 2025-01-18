@@ -4,7 +4,8 @@
     "scripts": {
         "start": "concurrently \"npm run server\" \"npm run client\"",
         "server": "cd backend && nodemon index.js",
-        "client": "cd frontend && npm start"
+        "client": "cd frontend && npm start",
+        "heroku-postbuild": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend"
     },
     "dependencies": {
         "curl": "^0.1.4",
