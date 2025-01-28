@@ -101,6 +101,7 @@ Email: bewxtt@gmail.com
 - **Emily Li**  
 - **Saidah Ly**  
 - **Jolin Huang**
+- **Thanin Kongkiatsophon**  
 
 ### Backend
 - **David Yu**  
