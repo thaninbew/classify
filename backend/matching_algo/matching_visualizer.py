@@ -1,3 +1,17 @@
+import matplotlib
+# Try to use a backend that works in your environment
+try:
+    matplotlib.use('TkAgg')  # Try TkAgg first
+except:
+    try:
+        matplotlib.use('Qt5Agg')  # Try Qt5Agg if TkAgg fails
+    except:
+        try:
+            matplotlib.use('Agg')  # Use Agg as a last resort (non-interactive)
+            print("Warning: Using non-interactive backend. Visualizations will be saved to files only.")
+        except:
+            print("Warning: Could not set matplotlib backend. Visualizations may not display properly.")
+
 import matplotlib.pyplot as plt 
 import seaborn as sns
 from sklearn.manifold import TSNE
@@ -7,7 +21,7 @@ from typing import List, Dict, Any
 import os
 import time
 from dotenv import load_dotenv
-from matching_algo.matching import match_tracks_to_clusters, create_feature_vector, build_tag_vocabulary, get_lastfm_tags
+from .matching import match_tracks_to_clusters, create_feature_vector, build_tag_vocabulary, get_lastfm_tags
 
 class MatchingVisualizer:
     def __init__(self):
@@ -148,6 +162,38 @@ class MatchingVisualizer:
             print(f"Error during visualization: {str(e)}")
             raise
 
+    def visualize_tag_distribution(self, tracks: List[Dict[str, str]], save_path: str = None):
+        """Visualize tag distribution for a set of tracks"""
+        try:
+            _, _, tag_vocabulary = self.prepare_data(tracks)
+            print("\nCalculating tag distribution...")
+            tag_counts = {tag: 0 for tag in tag_vocabulary}
+            for track in tracks:
+                tags = self.fetch_track_tags(track)
+                for tag in tags:
+                    tag_counts[tag] += 1
+
+            print("\nCreating tag distribution visualization...")
+            plt.figure(figsize=(15, 10))
+            
+            plt.bar(tag_counts.keys(), tag_counts.values())
+            plt.xticks(rotation=90)
+            plt.title('Tag Distribution')
+            plt.xlabel('Tag')
+            plt.ylabel('Count')
+            plt.tight_layout()
+
+            if save_path:
+                plt.savefig(save_path)
+                print(f"Saved tag distribution visualization to {save_path}")
+
+            plt.show()
+            print("Tag distribution visualization completed!")
+
+        except Exception as e:
+            print(f"Error during tag distribution visualization: {str(e)}")
+            raise
+
 def main():
     """Example usage with diverse genre test set"""
     print("Starting visualization demo...")
@@ -177,9 +223,25 @@ def main():
     try:
         visualizer = MatchingVisualizer()
         print(f"\nProcessing {len(test_tracks)} tracks...")
-        visualizer.visualize_clusters_2d(test_tracks, method='pca')
+        
+        output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
+        os.makedirs(output_dir, exist_ok=True)
+        
+        cluster_path = os.path.join(output_dir, "cluster_visualization.png")
+        tag_path = os.path.join(output_dir, "tag_distribution.png")
+        
+        print(f"Saving visualizations to {output_dir}...")
+        visualizer.visualize_clusters_2d(test_tracks, method='pca', save_path=cluster_path)
+        visualizer.visualize_tag_distribution(test_tracks, save_path=tag_path)
+        
+        print(f"Visualizations saved to:")
+        print(f"  - {cluster_path}")
+        print(f"  - {tag_path}")
+        
     except Exception as e:
         print(f"\nError in main: {str(e)}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
     main()

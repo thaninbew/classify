@@ -2,7 +2,7 @@ import unittest
 import os
 import numpy as np
 from dotenv import load_dotenv
-from matching_algo.matching import (
+from .matching import (
     get_lastfm_tags,
     create_feature_vector,
     build_tag_vocabulary,
